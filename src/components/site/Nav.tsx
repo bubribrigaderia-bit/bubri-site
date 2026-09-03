@@ -18,8 +18,14 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
   return (
     <header className="border-b border-line-soft bg-paper/90 backdrop-blur sticky top-0 z-40">
       <div className="mx-auto max-w-5xl flex items-center justify-between gap-4 px-6 py-4">
-        <Link href="/" className="font-display text-xl italic tracking-wide">
-          bubri
+        <Link href="/" aria-label="Bubri Confeitaria — página inicial" className="shrink-0">
+          <img
+            src="/logo-bubri.png"
+            alt="Bubri Confeitaria"
+            width={1000}
+            height={509}
+            className="h-8 w-auto md:h-9 dark:[filter:brightness(0)_invert(0.92)]"
+          />
         </Link>
 
         <nav className="hidden md:flex items-center gap-7">
