@@ -2,16 +2,18 @@ import Link from "next/link";
 import { getSiteSettings } from "@/lib/data/settings";
 import { getPillars } from "@/lib/data/pillars";
 import { getPageContent } from "@/lib/data/content";
+import { getActiveTestimonials } from "@/lib/data/testimonials";
 import { PillarCard } from "@/components/site/PillarCard";
 import { OrganicBlob } from "@/components/site/OrganicBlob";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 export default async function HomePage() {
-  const [settings, pillars, content] = await Promise.all([
+  const [settings, pillars, content, testimonials] = await Promise.all([
     getSiteSettings(),
     getPillars(),
     getPageContent("home"),
+    getActiveTestimonials(),
   ]);
 
   const heroWhatsapp = buildWhatsAppLink(
@@ -112,23 +114,63 @@ export default async function HomePage() {
         </div>
       </Reveal>
 
-      <Reveal className="mx-auto max-w-5xl px-6 w-full">
-        <div className="bg-paper-raised rounded-2xl p-6 md:p-8 flex flex-col gap-3 items-start">
-          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink">
-            Quem já experimentou
-          </p>
-          <p className="font-display text-xl italic text-ink">
-            Veja o que dizem nossos clientes
-          </p>
-          <a
-            href={settings.google_reviews_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-accent text-accent-ink font-semibold px-5 py-2.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-sm"
-          >
-            {content.reviews_cta}
-          </a>
-        </div>
+      <Reveal className="w-full flex flex-col gap-5">
+        <p className="mx-auto max-w-5xl px-6 w-full text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink">
+          Quem já experimentou
+        </p>
+
+        {testimonials.length > 0 ? (
+          <>
+            <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-px-6 px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {testimonials.map((t) => (
+                <figure
+                  key={t.id}
+                  className="snap-start shrink-0 w-[290px] md:w-[340px] bg-paper-raised rounded-2xl p-6 flex flex-col gap-3"
+                >
+                  <div
+                    className="text-accent tracking-widest text-sm"
+                    aria-label={`${t.rating} de 5 estrelas`}
+                  >
+                    {"★".repeat(t.rating)}
+                    <span className="text-line-soft">{"★".repeat(5 - t.rating)}</span>
+                  </div>
+                  <blockquote className="text-sm text-ink leading-relaxed">
+                    “{t.text}”
+                  </blockquote>
+                  <figcaption className="mt-auto text-xs font-semibold text-graphite">
+                    — {t.author_name}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <div className="mx-auto max-w-5xl px-6 w-full">
+              <a
+                href={settings.google_reviews_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block border border-accent text-accent-ink font-semibold px-5 py-2.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-sm"
+              >
+                Continuar vendo no Google
+              </a>
+            </div>
+          </>
+        ) : (
+          <div className="mx-auto max-w-5xl px-6 w-full">
+            <div className="bg-paper-raised rounded-2xl p-6 md:p-8 flex flex-col gap-3 items-start">
+              <p className="font-display text-xl italic text-ink">
+                Veja o que dizem nossos clientes
+              </p>
+              <a
+                href={settings.google_reviews_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-accent text-accent-ink font-semibold px-5 py-2.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-sm"
+              >
+                Continuar vendo no Google
+              </a>
+            </div>
+          </div>
+        )}
       </Reveal>
 
       <div className="flex justify-center">

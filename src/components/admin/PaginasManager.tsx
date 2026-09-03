@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import type { Pillar, FaqItem } from "@/types/database";
+import type { Pillar, FaqItem, Testimonial } from "@/types/database";
 import { HomeContentForm } from "./HomeContentForm";
 import { SobreContentForm } from "./SobreContentForm";
 import { FaqManager } from "./FaqManager";
+import { TestimonialsManager } from "./TestimonialsManager";
 
 const TABS = ["home", "sobre", "contato"] as const;
 type Tab = (typeof TABS)[number];
@@ -20,11 +21,13 @@ export function PaginasManager({
   homeContent,
   sobreContent,
   faqItems,
+  testimonials,
 }: {
   pillars: Pillar[];
   homeContent: Record<string, string>;
   sobreContent: Record<string, string>;
   faqItems: FaqItem[];
+  testimonials: Testimonial[];
 }) {
   const [tab, setTab] = useState<Tab>("home");
 
@@ -43,7 +46,14 @@ export function PaginasManager({
         ))}
       </div>
 
-      {tab === "home" && <HomeContentForm content={homeContent} pillars={pillars} />}
+      {tab === "home" && (
+        <div className="flex flex-col gap-8">
+          <HomeContentForm content={homeContent} pillars={pillars} />
+          <div className="border-t border-line-soft pt-6">
+            <TestimonialsManager initialItems={testimonials} />
+          </div>
+        </div>
+      )}
       {tab === "sobre" && <SobreContentForm content={sobreContent} />}
       {tab === "contato" && <FaqManager initialItems={faqItems} />}
     </div>

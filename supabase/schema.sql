@@ -64,6 +64,19 @@ create table if not exists faq_items (
 );
 
 -- ---------------------------------------------------------------------------
+-- testimonials (avaliações reais de clientes, exibidas na Home)
+-- ---------------------------------------------------------------------------
+create table if not exists testimonials (
+  id uuid primary key default gen_random_uuid(),
+  author_name text not null default '',
+  text text not null default '',
+  rating int not null default 5 check (rating between 1 and 5),
+  display_order int not null default 0,
+  active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+-- ---------------------------------------------------------------------------
 -- page_content (textos avulsos: headline da Home, parágrafos do Sobre, etc.)
 -- ---------------------------------------------------------------------------
 create table if not exists page_content (
@@ -97,6 +110,7 @@ alter table site_settings enable row level security;
 alter table pillars enable row level security;
 alter table products enable row level security;
 alter table faq_items enable row level security;
+alter table testimonials enable row level security;
 alter table page_content enable row level security;
 
 -- Leitura pública (site institucional não exige login para visitantes)
@@ -109,12 +123,15 @@ create policy "public read active products" on products for select to anon using
 create policy "admin read all products" on products for select to authenticated using (true);
 create policy "public read active faq" on faq_items for select to anon using (active = true);
 create policy "admin read all faq" on faq_items for select to authenticated using (true);
+create policy "public read active testimonials" on testimonials for select to anon using (active = true);
+create policy "admin read all testimonials" on testimonials for select to authenticated using (true);
 
 -- Escrita: só usuário autenticado (o painel exige login; não há cadastro público de conta)
 create policy "admin write settings" on site_settings for all to authenticated using (true) with check (true);
 create policy "admin write pillars" on pillars for all to authenticated using (true) with check (true);
 create policy "admin write products" on products for all to authenticated using (true) with check (true);
 create policy "admin write faq" on faq_items for all to authenticated using (true) with check (true);
+create policy "admin write testimonials" on testimonials for all to authenticated using (true) with check (true);
 create policy "admin write page_content" on page_content for all to authenticated using (true) with check (true);
 
 -- ---------------------------------------------------------------------------

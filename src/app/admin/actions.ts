@@ -139,6 +139,48 @@ export async function deleteFaqItem(id: string): Promise<ActionResult> {
   return { success: true };
 }
 
+const testimonialSchema = z.object({
+  id: z.string().uuid().optional(),
+  author_name: z.string().trim().min(1, "Informe o nome de quem avaliou").max(80),
+  text: z.string().trim().min(1, "Informe o texto da avaliação").max(700),
+  rating: z.number().int().min(1).max(5).default(5),
+  display_order: z.number().int().default(0),
+  active: z.boolean().default(true),
+});
+
+export async function upsertTestimonial(input: unknown): Promise<ActionResult> {
+  const parsed = testimonialSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0].message };
+  }
+
+  const supabase = await createClient();
+  const { id, ...values } = parsed.data;
+
+  const { error } = id
+    ? await supabase.from("testimonials").update(values).eq("id", id)
+    : await supabase.from("testimonials").insert(values);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/");
+  return { success: true };
+}
+
+export async function deleteTestimonial(id: string): Promise<ActionResult> {
+  if (!z.string().uuid().safeParse(id).success) {
+    return { success: false, error: "ID de depoimento inválido" };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("testimonials").delete().eq("id", id);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/");
+  return { success: true };
+}
+
 const pageContentEntrySchema = z.object({
   page: z.enum(["home", "sobre", "contato"]),
   section_key: z.string().trim().min(1).max(60),

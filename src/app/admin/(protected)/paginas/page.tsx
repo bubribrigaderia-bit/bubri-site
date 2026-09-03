@@ -1,14 +1,16 @@
 import { getPillars } from "@/lib/data/pillars";
 import { getPageContent } from "@/lib/data/content";
 import { getAllFaqItemsForAdmin } from "@/lib/data/faq";
+import { getAllTestimonialsForAdmin } from "@/lib/data/testimonials";
 import { PaginasManager } from "@/components/admin/PaginasManager";
 
 export default async function AdminPaginasPage() {
-  const [pillars, homeContent, sobreContent, faqItems] = await Promise.all([
+  const [pillars, homeContent, sobreContent, faqItems, testimonials] = await Promise.all([
     getPillars(),
     getPageContent("home"),
     getPageContent("sobre"),
     getAllFaqItemsForAdmin(),
+    getAllTestimonialsForAdmin(),
   ]);
 
   return (
@@ -19,6 +21,7 @@ export default async function AdminPaginasPage() {
         homeContent={homeContent}
         sobreContent={sobreContent}
         faqItems={faqItems}
+        testimonials={testimonials}
       />
     </div>
   );

@@ -59,6 +59,16 @@ export type FaqItem = {
   active: boolean;
 };
 
+export type Testimonial = {
+  id: string;
+  author_name: string;
+  text: string;
+  rating: number;
+  display_order: number;
+  active: boolean;
+  created_at: string;
+};
+
 export type PageContent = {
   page: PageKey;
   section_key: string;
@@ -91,6 +101,12 @@ export type Database = {
         Row: FaqItem;
         Insert: Partial<FaqItem>;
         Update: Partial<FaqItem>;
+        Relationships: [];
+      };
+      testimonials: {
+        Row: Testimonial;
+        Insert: Partial<Testimonial>;
+        Update: Partial<Testimonial>;
         Relationships: [];
       };
       page_content: {
