@@ -21,9 +21,9 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
   const pathname = usePathname();
 
   const linkClass = (href: string) =>
-    `relative text-sm py-1 transition-colors ${
+    `relative text-base font-medium py-1 transition-colors ${
       pathname === href ? "text-ink font-semibold" : "text-graphite hover:text-ink"
-    } after:absolute after:left-0 after:-bottom-0.5 after:h-px after:bg-accent after:transition-all ${
+    } after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:bg-accent after:transition-all ${
       pathname === href ? "after:w-full" : "after:w-0 hover:after:w-full"
     }`;
 
@@ -47,7 +47,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden absolute right-0 text-sm border border-line-soft px-3 py-1.5 rounded-full"
+            className="md:hidden absolute right-0 text-base font-medium border border-line-soft px-4 py-2 rounded-full"
             aria-expanded={open}
             aria-label="Abrir menu"
           >
@@ -56,7 +56,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
         </div>
 
         {/* Linha 2: navegação centralizada (desktop) */}
-        <nav className="hidden md:flex items-center justify-center gap-8 pb-3">
+        <nav className="hidden md:flex items-center justify-center gap-9 pb-4">
           <Link href="/" className={linkClass("/")}>
             Home
           </Link>
@@ -64,7 +64,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
           <div className="relative group">
             <button
               type="button"
-              className={`text-sm py-1 transition-colors ${
+              className={`text-base font-medium py-1 transition-colors ${
                 occasionsActive ? "text-ink font-semibold" : "text-graphite group-hover:text-ink"
               }`}
             >
@@ -76,8 +76,8 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`px-4 py-2 text-sm text-graphite hover:text-ink hover:bg-paper-raised transition-colors ${
-                      i === OCCASION_LINKS.length - 1 ? "border-t border-line-soft mt-1 pt-2.5 font-medium" : ""
+                    className={`px-4 py-2.5 text-base text-graphite hover:text-ink hover:bg-paper-raised transition-colors ${
+                      i === OCCASION_LINKS.length - 1 ? "border-t border-line-soft mt-1 pt-3 font-medium" : ""
                     }`}
                   >
                     {link.label}
@@ -98,7 +98,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm bg-accent text-paper px-5 py-2 rounded-full font-semibold hover:opacity-90 transition-opacity"
+            className="text-base bg-accent text-paper px-6 py-2.5 rounded-full font-bold shadow-sm hover:opacity-90 transition-opacity"
           >
             WhatsApp
           </a>
@@ -108,7 +108,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
       {/* Menu mobile */}
       {open && (
         <nav className="md:hidden flex flex-col gap-1 px-6 pb-4 border-t border-line-soft pt-3">
-          <Link href="/" onClick={() => setOpen(false)} className="py-2 text-sm text-graphite">
+          <Link href="/" onClick={() => setOpen(false)} className="py-2.5 text-base text-graphite">
             Home
           </Link>
           <p className="pt-2 text-xs font-semibold uppercase tracking-wider text-accent-ink">
@@ -119,7 +119,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="py-2 pl-3 text-sm text-graphite"
+              className="py-2.5 pl-3 text-base text-graphite"
             >
               {link.label}
             </Link>
@@ -127,14 +127,14 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
           <Link
             href="/nossa-historia"
             onClick={() => setOpen(false)}
-            className="py-2 mt-1 text-sm text-graphite"
+            className="py-2.5 mt-1 text-base text-graphite"
           >
             Nossa História
           </Link>
           <Link
             href="/contato"
             onClick={() => setOpen(false)}
-            className="py-2 text-sm text-graphite"
+            className="py-2.5 text-base text-graphite"
           >
             Contato
           </Link>
@@ -142,7 +142,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 text-sm bg-accent text-paper px-4 py-2 rounded-full text-center font-semibold"
+            className="mt-3 text-base bg-accent text-paper px-5 py-3 rounded-full text-center font-bold"
           >
             WhatsApp
           </a>
