@@ -16,7 +16,7 @@ export function ProductCard({
       <PhotoOrPlaceholder
         src={product.photo_url}
         alt={product.name}
-        className="h-28 w-full rounded-xl"
+        className="aspect-square w-full rounded-xl"
       />
       <p className="font-display text-base mt-1">{product.name}</p>
       <p className="text-xs text-graphite leading-relaxed">{product.description}</p>

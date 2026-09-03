@@ -3,15 +3,17 @@
 import { useCallback, useState } from "react";
 import Cropper, { type Area } from "react-easy-crop";
 
+export type AspectOption = { label: string; value: number };
+
 export function ImageCropModal({
   imageSrc,
-  aspect,
+  aspectOptions,
   busy = false,
   onCancel,
   onConfirm,
 }: {
   imageSrc: string;
-  aspect: number;
+  aspectOptions: AspectOption[];
   busy?: boolean;
   onCancel: () => void;
   onConfirm: (cropPixels: Area) => void;
@@ -19,6 +21,7 @@ export function ImageCropModal({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [cropPixels, setCropPixels] = useState<Area | null>(null);
+  const [aspect, setAspect] = useState(aspectOptions[0].value);
 
   const onCropComplete = useCallback((_area: Area, areaPixels: Area) => {
     setCropPixels(areaPixels);
@@ -30,9 +33,28 @@ export function ImageCropModal({
         <div>
           <h3 className="font-display text-lg">Ajustar foto</h3>
           <p className="text-xs text-graphite">
-            Arraste para reposicionar e use a barra para dar zoom.
+            Escolha o formato, arraste para reposicionar e use a barra para dar zoom.
           </p>
         </div>
+
+        {aspectOptions.length > 1 && (
+          <div className="flex flex-wrap gap-2">
+            {aspectOptions.map((option) => (
+              <button
+                key={option.label}
+                type="button"
+                onClick={() => setAspect(option.value)}
+                className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                  aspect === option.value
+                    ? "bg-accent border-accent text-paper font-semibold"
+                    : "border-line-soft text-graphite hover:border-accent"
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="relative w-full h-64 bg-black/80 rounded-xl overflow-hidden">
           <Cropper

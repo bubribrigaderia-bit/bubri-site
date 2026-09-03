@@ -7,7 +7,7 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
       <PhotoOrPlaceholder
         src={pillar.photo_url}
         alt={pillar.title}
-        className="h-28 w-full rounded-xl"
+        className="aspect-square w-full rounded-xl"
       />
       <p className="font-display text-lg">{pillar.title}</p>
       <p className="text-sm text-graphite leading-relaxed">{pillar.description}</p>

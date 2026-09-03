@@ -5,20 +5,26 @@ import type { Area } from "react-easy-crop";
 import { uploadImage } from "@/app/admin/actions";
 import { PhotoOrPlaceholder } from "@/components/site/PhotoOrPlaceholder";
 import { getCroppedImageFile, readFileAsDataUrl } from "@/lib/cropImage";
-import { ImageCropModal } from "./ImageCropModal";
+import { ImageCropModal, type AspectOption } from "./ImageCropModal";
+
+const DEFAULT_ASPECT_OPTIONS: AspectOption[] = [
+  { label: "Quadrada", value: 1 },
+  { label: "Vertical", value: 4 / 5 },
+  { label: "Horizontal", value: 4 / 3 },
+];
 
 export function ImageUploadField({
   label,
   value,
   onChange,
-  aspect = 4 / 3,
+  aspectOptions = DEFAULT_ASPECT_OPTIONS,
   exportMaxWidth = 1600,
 }: {
   label: string;
   value: string | null;
   onChange: (url: string) => void;
-  /** Proporção do recorte (largura / altura). Padrão 4:3. */
-  aspect?: number;
+  /** Formatos de recorte oferecidos. O primeiro é o padrão. */
+  aspectOptions?: AspectOption[];
   /** Largura máxima do JPEG gerado. Maior para fotos que ocupam a tela toda. */
   exportMaxWidth?: number;
 }) {
@@ -130,7 +136,7 @@ export function ImageUploadField({
       {editing && (
         <ImageCropModal
           imageSrc={editing.src}
-          aspect={aspect}
+          aspectOptions={aspectOptions}
           busy={uploading}
           onCancel={() => {
             if (uploading) return;
