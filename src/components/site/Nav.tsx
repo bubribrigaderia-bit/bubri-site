@@ -5,12 +5,6 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { OCCASIONS } from "@/types/database";
 
-const MAIN_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/nossa-historia", label: "Nossa História" },
-  { href: "/contato", label: "Contato" },
-];
-
 const OCCASION_LINKS = [
   ...OCCASIONS.map((o) => ({ href: `/${o.path}`, label: o.menuLabel })),
   { href: "/cardapio", label: "Ver catálogo completo" },
@@ -21,7 +15,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
   const pathname = usePathname();
 
   const linkClass = (active: boolean) =>
-    `text-base font-bold px-5 py-2 rounded-full border-2 border-ink transition-colors ${
+    `font-display text-lg px-5 py-2 rounded-full border-2 border-ink transition-colors ${
       active ? "bg-ink text-paper" : "text-ink hover:bg-ink hover:text-paper"
     }`;
 
@@ -69,7 +63,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`px-4 py-2.5 text-base font-medium text-ink hover:bg-accent-soft hover:text-accent-ink hover:font-bold transition-colors ${
+                    className={`px-4 py-2.5 font-display text-base text-ink hover:bg-accent-soft hover:text-accent-ink hover:font-bold transition-colors ${
                       i === OCCASION_LINKS.length - 1 ? "border-t-2 border-ink/25 mt-1 pt-3" : ""
                     }`}
                   >
@@ -91,7 +85,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-base bg-gold text-ink px-6 py-2 rounded-full font-bold border-2 border-gold shadow-sm hover:opacity-90 transition-opacity"
+            className="font-display text-lg bg-gold text-ink px-6 py-2 rounded-full border-2 border-gold shadow-sm hover:opacity-90 transition-opacity"
           >
             WhatsApp
           </a>
@@ -101,7 +95,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
       {/* Menu mobile */}
       {open && (
         <nav className="md:hidden flex flex-col gap-1 px-6 pb-4 border-t-2 border-ink/20 pt-3">
-          <Link href="/" onClick={() => setOpen(false)} className="py-2.5 text-base font-bold text-ink">
+          <Link href="/" onClick={() => setOpen(false)} className="py-2.5 font-display text-lg text-ink">
             Home
           </Link>
           <p className="pt-2 text-xs font-semibold uppercase tracking-wider text-accent-ink">
@@ -112,7 +106,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="py-2 pl-3 text-base font-medium text-ink"
+              className="py-2 pl-3 font-display text-base text-ink"
             >
               {link.label}
             </Link>
@@ -120,14 +114,14 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
           <Link
             href="/nossa-historia"
             onClick={() => setOpen(false)}
-            className="py-2.5 mt-1 text-base font-bold text-ink"
+            className="py-2.5 mt-1 font-display text-lg text-ink"
           >
             Nossa História
           </Link>
           <Link
             href="/contato"
             onClick={() => setOpen(false)}
-            className="py-2.5 text-base font-bold text-ink"
+            className="py-2.5 font-display text-lg text-ink"
           >
             Contato
           </Link>
@@ -135,7 +129,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 text-base bg-gold text-ink px-5 py-3 rounded-full text-center font-bold"
+            className="mt-3 font-display text-lg bg-gold text-ink px-5 py-3 rounded-full text-center"
           >
             WhatsApp
           </a>
