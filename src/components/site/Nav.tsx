@@ -25,14 +25,14 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
     <header className="border-b border-line-soft bg-paper/90 backdrop-blur sticky top-0 z-40">
       <div className="mx-auto max-w-5xl px-6">
         {/* Linha 1: logo (onda dourada + wordmark) centralizada */}
-        <div className="relative flex items-center justify-center py-2 md:py-3">
+        <div className="relative flex items-center justify-center pt-3 pb-1 md:pt-4 md:pb-2">
           <Link href="/" aria-label="Bubri Confeitaria — página inicial" className="shrink-0">
             <img
-              src="/logo-bubri.png"
+              src="/logo-bubri.png?v=2"
               alt="Bubri Confeitaria"
               width={880}
               height={681}
-              className="h-16 md:h-24 w-auto"
+              className="h-24 md:h-36 w-auto"
             />
           </Link>
 
@@ -48,7 +48,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
         </div>
 
         {/* Linha 2: navegação centralizada (desktop) */}
-        <nav className="hidden md:flex items-center justify-center gap-3 pb-4">
+        <nav className="hidden md:flex items-center justify-center gap-3 pb-4 pt-1">
           <Link href="/" className={linkClass(pathname === "/")}>
             Home
           </Link>
@@ -78,7 +78,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             Nossa História
           </Link>
           <Link href="/contato" className={linkClass(pathname === "/contato")}>
-            Contato
+            FAQ
           </Link>
 
           <a
@@ -87,7 +87,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             rel="noopener noreferrer"
             className="font-display text-lg bg-gold text-ink px-6 py-2 rounded-full border-2 border-gold shadow-sm hover:opacity-90 transition-opacity"
           >
-            WhatsApp
+            Fale conosco
           </a>
         </nav>
       </div>
@@ -123,7 +123,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             onClick={() => setOpen(false)}
             className="py-2.5 font-display text-lg text-ink"
           >
-            Contato
+            FAQ
           </Link>
           <a
             href={whatsappHref}
@@ -131,7 +131,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             rel="noopener noreferrer"
             className="mt-3 font-display text-lg bg-gold text-ink px-5 py-3 rounded-full text-center"
           >
-            WhatsApp
+            Fale conosco
           </a>
         </nav>
       )}

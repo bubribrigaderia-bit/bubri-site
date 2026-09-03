@@ -11,7 +11,7 @@ export function Footer({
     <footer className="border-t border-line-soft mt-16">
       <div className="mx-auto max-w-5xl px-6 py-8 flex flex-wrap items-center justify-between gap-3 text-sm text-graphite">
         <img
-          src="/logo-bubri.png"
+          src="/logo-bubri.png?v=2"
           alt="Bubri Confeitaria"
           width={880}
           height={681}
