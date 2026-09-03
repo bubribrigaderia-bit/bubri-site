@@ -20,11 +20,11 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  const linkClass = (href: string) =>
-    `relative text-base font-medium py-1 transition-colors ${
-      pathname === href ? "text-ink font-semibold" : "text-graphite hover:text-ink"
-    } after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:bg-accent after:transition-all ${
-      pathname === href ? "after:w-full" : "after:w-0 hover:after:w-full"
+  const linkClass = (active: boolean) =>
+    `text-base font-bold px-4 py-2 rounded-full border-2 border-accent transition-colors ${
+      active
+        ? "bg-accent text-paper"
+        : "text-accent-ink hover:bg-accent hover:text-paper"
     }`;
 
   const occasionsActive = OCCASIONS.some((o) => pathname === `/${o.path}`);
@@ -38,9 +38,9 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             <img
               src="/logo-bubri.png"
               alt="Bubri Confeitaria"
-              width={1000}
-              height={509}
-              className="h-11 md:h-14 w-auto dark:[filter:brightness(0)_invert(0.92)]"
+              width={469}
+              height={230}
+              className="h-12 md:h-16 w-auto"
             />
           </Link>
 
@@ -56,28 +56,23 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
         </div>
 
         {/* Linha 2: navegação centralizada (desktop) */}
-        <nav className="hidden md:flex items-center justify-center gap-9 pb-4">
-          <Link href="/" className={linkClass("/")}>
+        <nav className="hidden md:flex items-center justify-center gap-3 pb-4">
+          <Link href="/" className={linkClass(pathname === "/")}>
             Home
           </Link>
 
           <div className="relative group">
-            <button
-              type="button"
-              className={`text-base font-medium py-1 transition-colors ${
-                occasionsActive ? "text-ink font-semibold" : "text-graphite group-hover:text-ink"
-              }`}
-            >
+            <button type="button" className={linkClass(occasionsActive)}>
               Ocasiões ▾
             </button>
             <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-opacity">
-              <div className="bg-paper border border-line-soft rounded-2xl shadow-lg py-2 min-w-[200px] flex flex-col">
+              <div className="bg-paper border-2 border-accent rounded-2xl shadow-lg py-2 min-w-[210px] flex flex-col">
                 {OCCASION_LINKS.map((link, i) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`px-4 py-2.5 text-base text-graphite hover:text-ink hover:bg-paper-raised transition-colors ${
-                      i === OCCASION_LINKS.length - 1 ? "border-t border-line-soft mt-1 pt-3 font-medium" : ""
+                    className={`px-4 py-2.5 text-base font-medium text-accent-ink hover:bg-accent hover:text-paper transition-colors ${
+                      i === OCCASION_LINKS.length - 1 ? "border-t-2 border-accent/40 mt-1 pt-3" : ""
                     }`}
                   >
                     {link.label}
@@ -87,10 +82,10 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             </div>
           </div>
 
-          <Link href="/nossa-historia" className={linkClass("/nossa-historia")}>
+          <Link href="/nossa-historia" className={linkClass(pathname === "/nossa-historia")}>
             Nossa História
           </Link>
-          <Link href="/contato" className={linkClass("/contato")}>
+          <Link href="/contato" className={linkClass(pathname === "/contato")}>
             Contato
           </Link>
 
@@ -98,7 +93,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-base bg-accent text-paper px-6 py-2.5 rounded-full font-bold shadow-sm hover:opacity-90 transition-opacity"
+            className="text-base bg-accent text-paper px-5 py-2 rounded-full font-bold border-2 border-accent shadow-sm hover:opacity-90 transition-opacity"
           >
             WhatsApp
           </a>
@@ -107,8 +102,8 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
 
       {/* Menu mobile */}
       {open && (
-        <nav className="md:hidden flex flex-col gap-1 px-6 pb-4 border-t border-line-soft pt-3">
-          <Link href="/" onClick={() => setOpen(false)} className="py-2.5 text-base text-graphite">
+        <nav className="md:hidden flex flex-col gap-1 px-6 pb-4 border-t-2 border-accent/30 pt-3">
+          <Link href="/" onClick={() => setOpen(false)} className="py-2.5 text-base font-bold text-accent-ink">
             Home
           </Link>
           <p className="pt-2 text-xs font-semibold uppercase tracking-wider text-accent-ink">
@@ -119,7 +114,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="py-2.5 pl-3 text-base text-graphite"
+              className="py-2 pl-3 text-base font-medium text-accent-ink"
             >
               {link.label}
             </Link>
@@ -127,14 +122,14 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
           <Link
             href="/nossa-historia"
             onClick={() => setOpen(false)}
-            className="py-2.5 mt-1 text-base text-graphite"
+            className="py-2.5 mt-1 text-base font-bold text-accent-ink"
           >
             Nossa História
           </Link>
           <Link
             href="/contato"
             onClick={() => setOpen(false)}
-            className="py-2.5 text-base text-graphite"
+            className="py-2.5 text-base font-bold text-accent-ink"
           >
             Contato
           </Link>
