@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "8mb",
     },
   },
+  async redirects() {
+    return [
+      { source: "/sobre", destination: "/nossa-historia", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

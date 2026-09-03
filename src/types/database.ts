@@ -11,6 +11,29 @@ export const PRODUCT_CATEGORIES: { value: ProductCategory; label: string }[] = [
   { value: "degustacao", label: "Kit degustação" },
 ];
 
+export type Occasion = {
+  value: ProductCategory;
+  /** segmento da URL: /presentes, /eventos, ... */
+  path: string;
+  /** rótulo curto usado no menu e nos cards */
+  menuLabel: string;
+};
+
+export const OCCASIONS: Occasion[] = [
+  { value: "presentes", path: "presentes", menuLabel: "Presente" },
+  { value: "casamentos_eventos", path: "eventos", menuLabel: "Eventos" },
+  { value: "corporativo", path: "corporativo", menuLabel: "Corporativo" },
+  { value: "degustacao", path: "degustacao", menuLabel: "Degustação" },
+];
+
+export function occasionByPath(path: string): Occasion | undefined {
+  return OCCASIONS.find((o) => o.path === path);
+}
+
+export function occasionByValue(value: ProductCategory): Occasion | undefined {
+  return OCCASIONS.find((o) => o.value === value);
+}
+
 export type PageKey = "home" | "sobre" | "contato";
 
 // Nota: essas entidades usam `type` (não `interface`) de propósito. O

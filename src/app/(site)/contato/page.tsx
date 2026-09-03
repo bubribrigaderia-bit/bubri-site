@@ -16,13 +16,13 @@ export default async function ContatoPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 flex flex-col gap-10">
-      <h1 className="font-display text-4xl">Contato</h1>
+      <h1 className="font-display text-4xl md:text-5xl">Contato</h1>
 
       <a
         href={buildWhatsAppLink(settings.whatsapp_number, "Oi! Vim pelo site da Bubri.")}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-accent text-paper font-bold text-center px-6 py-4 rounded-2xl hover:opacity-90 hover:-translate-y-0.5 transition-all"
+        className="bg-accent text-paper font-bold text-center text-lg px-6 py-5 rounded-2xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
       >
         Chamar no WhatsApp — {formatPhoneForDisplay(settings.whatsapp_number)}
       </a>
@@ -43,10 +43,8 @@ export default async function ContatoPage() {
         </div>
       </div>
 
-      <section className="flex flex-col gap-3">
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink">
-          Perguntas frequentes
-        </p>
+      <section className="flex flex-col gap-4">
+        <h2 className="font-display text-2xl md:text-3xl text-ink">Perguntas frequentes</h2>
         <FaqAccordion items={faqItems} />
       </section>
     </div>

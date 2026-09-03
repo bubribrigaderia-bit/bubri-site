@@ -73,7 +73,7 @@ export default async function HomePage() {
               {content.hero_eyebrow}
             </span>
             <h1
-              className={`animate-fade-up font-display text-4xl md:text-5xl leading-[1.1] text-balance ${
+              className={`animate-fade-up font-display text-5xl md:text-6xl leading-[1.05] text-balance ${
                 heroPhoto ? "text-paper" : "text-ink"
               }`}
               style={{ animationDelay: "80ms" }}
@@ -92,7 +92,7 @@ export default async function HomePage() {
               href={heroWhatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="animate-fade-up self-start mt-2 bg-accent text-paper font-semibold px-6 py-3 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+              className="animate-fade-up self-start mt-3 bg-accent text-paper font-bold text-base md:text-lg px-8 py-4 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
               style={{ animationDelay: "240ms" }}
             >
               {content.hero_cta}
@@ -113,10 +113,10 @@ export default async function HomePage() {
         </svg>
       </section>
 
-      <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-5">
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink">
+      <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
+        <h2 className="font-display text-3xl md:text-4xl text-ink text-balance">
           Escolha como quer viver a Bubri
-        </p>
+        </h2>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {pillars.map((pillar, index) => (
             <Reveal key={pillar.id} delayMs={index * 90}>
@@ -126,10 +126,10 @@ export default async function HomePage() {
         </div>
       </Reveal>
 
-      <Reveal className="w-full flex flex-col gap-5">
-        <p className="mx-auto max-w-5xl px-6 w-full text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink">
+      <Reveal className="w-full flex flex-col gap-6">
+        <h2 className="mx-auto max-w-5xl px-6 w-full font-display text-3xl md:text-4xl text-ink">
           Quem já experimentou
-        </p>
+        </h2>
 
         {testimonials.length > 0 ? (
           <>
@@ -160,7 +160,7 @@ export default async function HomePage() {
                 href={settings.google_reviews_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block border border-accent text-accent-ink font-semibold px-5 py-2.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-sm"
+                className="inline-block border-2 border-accent text-accent-ink font-bold px-7 py-3.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-base"
               >
                 Continuar vendo no Google
               </a>
@@ -169,14 +169,14 @@ export default async function HomePage() {
         ) : (
           <div className="mx-auto max-w-5xl px-6 w-full">
             <div className="bg-paper-raised rounded-2xl p-6 md:p-8 flex flex-col gap-3 items-start">
-              <p className="font-display text-xl italic text-ink">
+              <p className="font-display text-2xl italic text-ink">
                 Veja o que dizem nossos clientes
               </p>
               <a
                 href={settings.google_reviews_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-accent text-accent-ink font-semibold px-5 py-2.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-sm"
+                className="border-2 border-accent text-accent-ink font-bold px-7 py-3.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-base"
               >
                 Continuar vendo no Google
               </a>

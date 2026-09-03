@@ -5,9 +5,9 @@ import { PhotoOrPlaceholder } from "@/components/site/PhotoOrPlaceholder";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
-export const metadata: Metadata = { title: "Sobre" };
+export const metadata: Metadata = { title: "Nossa História" };
 
-export default async function SobrePage() {
+export default async function NossaHistoriaPage() {
   const [content, settings] = await Promise.all([
     getPageContent("sobre"),
     getSiteSettings(),
@@ -27,17 +27,15 @@ export default async function SobrePage() {
           className="h-64 w-full rounded-[2rem]"
         />
         <div className="flex flex-col gap-4">
-          <h1 className="font-display text-4xl italic">Sobre a Bubri</h1>
+          <h1 className="font-display text-4xl md:text-5xl italic">Nossa História</h1>
           <p className="text-graphite leading-relaxed">{content.paragrafo_1}</p>
           <p className="text-graphite leading-relaxed">{content.paragrafo_2}</p>
           <p className="text-graphite leading-relaxed">{content.paragrafo_3}</p>
         </div>
       </section>
 
-      <Reveal className="flex flex-col gap-5">
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink">
-          Nossos valores
-        </p>
+      <Reveal className="flex flex-col gap-6">
+        <h2 className="font-display text-2xl md:text-3xl text-ink">Nossos valores</h2>
         <div className="grid gap-5 sm:grid-cols-3">
           {values.map((value) => (
             <div key={value.title} className="bg-paper-raised rounded-2xl p-5 flex flex-col gap-1.5">
@@ -52,7 +50,7 @@ export default async function SobrePage() {
         href={buildWhatsAppLink(settings.whatsapp_number, "Oi! Quero conversar sobre o meu evento.")}
         target="_blank"
         rel="noopener noreferrer"
-        className="self-center bg-accent text-paper font-semibold px-6 py-3 rounded-full hover:opacity-90 hover:-translate-y-0.5 transition-all"
+        className="self-center bg-accent text-paper font-bold text-base md:text-lg px-8 py-4 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
       >
         {content.cta_final}
       </a>

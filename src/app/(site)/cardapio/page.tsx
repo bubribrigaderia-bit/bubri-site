@@ -12,7 +12,7 @@ export default async function CardapioPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 flex flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <h1 className="font-display text-4xl">Cardápio</h1>
+        <h1 className="font-display text-4xl md:text-5xl">Cardápio completo</h1>
         <p className="text-graphite max-w-prose">
           Cada linha da Bubri foi pensada para uma ocasião diferente. Escolha a categoria e fale
           com a gente para montar o kit ideal.

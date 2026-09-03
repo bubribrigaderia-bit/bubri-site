@@ -12,7 +12,7 @@ type Tab = (typeof TABS)[number];
 
 const TAB_LABELS: Record<Tab, string> = {
   home: "Home",
-  sobre: "Sobre",
+  sobre: "Nossa História",
   contato: "Contato",
 };
 
