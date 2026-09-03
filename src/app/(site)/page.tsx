@@ -85,11 +85,23 @@ export default async function HomePage() {
             </a>
           </div>
         </div>
+
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-0 left-0 w-full h-12 md:h-20 text-paper"
+          viewBox="0 0 1440 100"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="currentColor"
+            d="M0,64 C220,20 400,20 720,56 C1000,88 1200,92 1440,48 L1440,100 L0,100 Z"
+          />
+        </svg>
       </section>
 
       <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-5">
         <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink">
-          Quatro jeitos de pedir Bubri
+          Escolha como quer viver a Bubri
         </p>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {pillars.map((pillar, index) => (
