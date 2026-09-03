@@ -77,7 +77,7 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
               href={whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="self-start mt-2 bg-accent text-paper font-bold px-8 py-4 rounded-full shadow-lg text-base hover:opacity-90 hover:-translate-y-0.5 transition-all"
+              className="self-start mt-2 bg-accent text-paper font-bold px-10 py-5 rounded-full shadow-lg text-lg md:text-xl hover:opacity-90 hover:-translate-y-0.5 transition-all"
             >
               Falar no WhatsApp
             </a>
@@ -186,7 +186,7 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
             href={whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-accent text-paper font-bold px-8 py-4 rounded-full shadow-lg text-base hover:opacity-90 hover:-translate-y-0.5 transition-all"
+            className="bg-accent text-paper font-bold px-10 py-5 rounded-full shadow-lg text-lg md:text-xl hover:opacity-90 hover:-translate-y-0.5 transition-all"
           >
             Falar no WhatsApp
           </a>

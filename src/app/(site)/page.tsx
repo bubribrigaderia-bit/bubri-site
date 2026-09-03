@@ -92,7 +92,7 @@ export default async function HomePage() {
               href={heroWhatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="animate-fade-up self-start mt-3 bg-accent text-paper font-bold text-base md:text-lg px-8 py-4 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+              className="animate-fade-up self-start mt-3 bg-accent text-paper font-bold text-lg md:text-xl px-10 py-5 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
               style={{ animationDelay: "240ms" }}
             >
               {content.hero_cta}
@@ -160,7 +160,7 @@ export default async function HomePage() {
                 href={settings.google_reviews_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block border-2 border-accent text-accent-ink font-bold px-7 py-3.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-base"
+                className="inline-block border-2 border-accent text-accent-ink font-bold px-9 py-4 rounded-full hover:bg-accent hover:text-paper transition-colors text-lg"
               >
                 Continuar vendo no Google
               </a>
@@ -176,7 +176,7 @@ export default async function HomePage() {
                 href={settings.google_reviews_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-2 border-accent text-accent-ink font-bold px-7 py-3.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-base"
+                className="border-2 border-accent text-accent-ink font-bold px-9 py-4 rounded-full hover:bg-accent hover:text-paper transition-colors text-lg"
               >
                 Continuar vendo no Google
               </a>

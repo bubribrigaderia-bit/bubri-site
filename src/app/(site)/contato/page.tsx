@@ -22,7 +22,7 @@ export default async function ContatoPage() {
         href={buildWhatsAppLink(settings.whatsapp_number, "Oi! Vim pelo site da Bubri.")}
         target="_blank"
         rel="noopener noreferrer"
-        className="bg-accent text-paper font-bold text-center text-lg px-6 py-5 rounded-2xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+        className="bg-accent text-paper font-bold text-center text-xl px-8 py-6 rounded-2xl shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
       >
         Chamar no WhatsApp — {formatPhoneForDisplay(settings.whatsapp_number)}
       </a>
