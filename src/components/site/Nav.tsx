@@ -21,10 +21,8 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
   const pathname = usePathname();
 
   const linkClass = (active: boolean) =>
-    `text-base font-bold px-4 py-2 rounded-full border-2 border-accent transition-colors ${
-      active
-        ? "bg-accent text-paper"
-        : "text-accent-ink hover:bg-accent hover:text-paper"
+    `text-base font-bold px-5 py-2 rounded-full border-2 border-ink transition-colors ${
+      active ? "bg-ink text-paper" : "text-ink hover:bg-ink hover:text-paper"
     }`;
 
   const occasionsActive = OCCASIONS.some((o) => pathname === `/${o.path}`);
@@ -32,15 +30,15 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
   return (
     <header className="border-b border-line-soft bg-paper/90 backdrop-blur sticky top-0 z-40">
       <div className="mx-auto max-w-5xl px-6">
-        {/* Linha 1: logo centralizada */}
-        <div className="relative flex items-center justify-center py-3 md:py-4">
+        {/* Linha 1: logo (onda dourada + wordmark) centralizada */}
+        <div className="relative flex items-center justify-center py-2 md:py-3">
           <Link href="/" aria-label="Bubri Confeitaria — página inicial" className="shrink-0">
             <img
               src="/logo-bubri.png"
               alt="Bubri Confeitaria"
-              width={469}
-              height={230}
-              className="h-12 md:h-16 w-auto"
+              width={880}
+              height={681}
+              className="h-16 md:h-24 w-auto"
             />
           </Link>
 
@@ -66,13 +64,13 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               Ocasiões ▾
             </button>
             <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-opacity">
-              <div className="bg-paper border-2 border-accent rounded-2xl shadow-lg py-2 min-w-[210px] flex flex-col">
+              <div className="bg-paper border-2 border-ink rounded-2xl shadow-lg py-2 min-w-[210px] flex flex-col">
                 {OCCASION_LINKS.map((link, i) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`px-4 py-2.5 text-base font-medium text-accent-ink hover:bg-accent hover:text-paper transition-colors ${
-                      i === OCCASION_LINKS.length - 1 ? "border-t-2 border-accent/40 mt-1 pt-3" : ""
+                    className={`px-4 py-2.5 text-base font-medium text-ink hover:bg-ink hover:text-paper transition-colors ${
+                      i === OCCASION_LINKS.length - 1 ? "border-t-2 border-ink/25 mt-1 pt-3" : ""
                     }`}
                   >
                     {link.label}
@@ -93,7 +91,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-base bg-accent text-paper px-5 py-2 rounded-full font-bold border-2 border-accent shadow-sm hover:opacity-90 transition-opacity"
+            className="text-base bg-gold text-ink px-6 py-2 rounded-full font-bold border-2 border-gold shadow-sm hover:opacity-90 transition-opacity"
           >
             WhatsApp
           </a>
@@ -102,8 +100,8 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
 
       {/* Menu mobile */}
       {open && (
-        <nav className="md:hidden flex flex-col gap-1 px-6 pb-4 border-t-2 border-accent/30 pt-3">
-          <Link href="/" onClick={() => setOpen(false)} className="py-2.5 text-base font-bold text-accent-ink">
+        <nav className="md:hidden flex flex-col gap-1 px-6 pb-4 border-t-2 border-ink/20 pt-3">
+          <Link href="/" onClick={() => setOpen(false)} className="py-2.5 text-base font-bold text-ink">
             Home
           </Link>
           <p className="pt-2 text-xs font-semibold uppercase tracking-wider text-accent-ink">
@@ -114,7 +112,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="py-2 pl-3 text-base font-medium text-accent-ink"
+              className="py-2 pl-3 text-base font-medium text-ink"
             >
               {link.label}
             </Link>
@@ -122,14 +120,14 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
           <Link
             href="/nossa-historia"
             onClick={() => setOpen(false)}
-            className="py-2.5 mt-1 text-base font-bold text-accent-ink"
+            className="py-2.5 mt-1 text-base font-bold text-ink"
           >
             Nossa História
           </Link>
           <Link
             href="/contato"
             onClick={() => setOpen(false)}
-            className="py-2.5 text-base font-bold text-accent-ink"
+            className="py-2.5 text-base font-bold text-ink"
           >
             Contato
           </Link>
@@ -137,7 +135,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 text-base bg-accent text-paper px-5 py-3 rounded-full text-center font-bold"
+            className="mt-3 text-base bg-gold text-ink px-5 py-3 rounded-full text-center font-bold"
           >
             WhatsApp
           </a>

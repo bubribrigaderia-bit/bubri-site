@@ -1,29 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  /* fundo = dourado da logo; texto e botões em marrom */
-  --paper: #c9a86a;
-  --paper-raised: #d5ba86;
+  /* fundo nude; texto marrom; ouro (#c9a86a) da logo como detalhe */
+  --paper: #f8f5f0;
+  --paper-raised: #fdfbf7;
   --ink: #3c2815;
-  --line: #a17e42;
-  --line-soft: #b6935a;
-  --graphite: #513a1e;
+  --line: #e2d6c2;
+  --line-soft: #eee5d6;
+  --graphite: #7c6549;
   --accent: #3c2815;
-  --accent-ink: #2a1c0d;
-  --accent-soft: #b48f4d;
+  --accent-ink: #8a6a2e;
+  --accent-soft: #f0e5cf;
+  --gold: #c9a86a;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #2a1c0e;
-    --paper-raised: #372613;
-    --ink: #f0e4cd;
-    --line: #6a5330;
-    --line-soft: #4a3a20;
-    --graphite: #d0ba90;
-    --accent: #cba86a;
-    --accent-ink: #e2c78b;
-    --accent-soft: #4a3a22;
+    --paper: #241a10;
+    --paper-raised: #302314;
+    --ink: #f1e6d2;
+    --line: #5a4830;
+    --line-soft: #453723;
+    --graphite: #cbb794;
+    --accent: #d9ac6c;
+    --accent-ink: #e8cd97;
+    --accent-soft: #43331f;
+    --gold: #d9ac6c;
   }
 }
 
@@ -37,7 +39,8 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
-  --font-sans: var(--font-geist-sans);
+  --color-gold: var(--gold);
+  --font-sans: var(--font-raleway);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-fraunces);
 }
@@ -45,7 +48,7 @@
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-sans), -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-raleway), -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .font-display {

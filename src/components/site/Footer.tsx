@@ -13,9 +13,9 @@ export function Footer({
         <img
           src="/logo-bubri.png"
           alt="Bubri Confeitaria"
-          width={469}
-          height={230}
-          className="h-8 w-auto"
+          width={880}
+          height={681}
+          className="h-12 w-auto"
         />
         <span>
           Instagram @{instagramHandle} · WhatsApp {formatPhoneForDisplay(whatsappNumber)}

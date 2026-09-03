@@ -50,7 +50,7 @@ export default async function NossaHistoriaPage() {
         href={buildWhatsAppLink(settings.whatsapp_number, "Oi! Quero conversar sobre o meu evento.")}
         target="_blank"
         rel="noopener noreferrer"
-        className="self-center bg-accent text-paper font-bold text-base md:text-lg px-8 py-4 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+        className="self-center bg-accent text-white font-bold text-base md:text-lg px-8 py-4 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
       >
         {content.cta_final}
       </a>

@@ -66,7 +66,7 @@ export default async function HomePage() {
           <div className="flex flex-col gap-4 max-w-xl">
             <span
               className={`animate-fade-up text-xs font-semibold tracking-[0.2em] uppercase ${
-                heroPhoto ? "text-paper/80" : "text-accent-ink"
+                heroPhoto ? "text-white/80" : "text-accent-ink"
               }`}
               style={{ animationDelay: "0ms" }}
             >
@@ -74,7 +74,7 @@ export default async function HomePage() {
             </span>
             <h1
               className={`animate-fade-up font-display text-4xl md:text-5xl leading-[1.1] text-balance ${
-                heroPhoto ? "text-paper" : "text-ink"
+                heroPhoto ? "text-white" : "text-ink"
               }`}
               style={{ animationDelay: "80ms" }}
             >
@@ -82,7 +82,7 @@ export default async function HomePage() {
             </h1>
             <p
               className={`animate-fade-up max-w-prose ${
-                heroPhoto ? "text-paper/85" : "text-graphite"
+                heroPhoto ? "text-white/90" : "text-graphite"
               }`}
               style={{ animationDelay: "160ms" }}
             >
@@ -92,7 +92,7 @@ export default async function HomePage() {
               href={heroWhatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="animate-fade-up self-start mt-3 bg-accent text-paper font-bold text-base md:text-lg px-8 py-4 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+              className="animate-fade-up self-start mt-3 bg-accent text-white font-bold text-base md:text-lg px-8 py-4 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
               style={{ animationDelay: "240ms" }}
             >
               {content.hero_cta}
@@ -160,7 +160,7 @@ export default async function HomePage() {
                 href={settings.google_reviews_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block border-2 border-accent text-accent-ink font-bold px-7 py-3.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-base"
+                className="inline-block border-2 border-accent text-accent-ink font-bold px-7 py-3.5 rounded-full hover:bg-accent hover:text-white transition-colors text-base"
               >
                 Continuar vendo no Google
               </a>
@@ -176,7 +176,7 @@ export default async function HomePage() {
                 href={settings.google_reviews_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border-2 border-accent text-accent-ink font-bold px-7 py-3.5 rounded-full hover:bg-accent hover:text-paper transition-colors text-base"
+                className="border-2 border-accent text-accent-ink font-bold px-7 py-3.5 rounded-full hover:bg-accent hover:text-white transition-colors text-base"
               >
                 Continuar vendo no Google
               </a>

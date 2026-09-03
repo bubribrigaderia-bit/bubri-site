@@ -56,20 +56,20 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
           <div className="flex flex-col gap-4 max-w-xl">
             <span
               className={`text-xs font-semibold tracking-[0.2em] uppercase ${
-                heroPhoto ? "text-paper/80" : "text-accent-ink"
+                heroPhoto ? "text-white/80" : "text-accent-ink"
               }`}
             >
               Bubri · {occasion.menuLabel}
             </span>
             <h1
               className={`font-display text-4xl md:text-5xl leading-[1.1] text-balance ${
-                heroPhoto ? "text-paper" : "text-ink"
+                heroPhoto ? "text-white" : "text-ink"
               }`}
             >
               {title}
             </h1>
             {description && (
-              <p className={`max-w-prose ${heroPhoto ? "text-paper/85" : "text-graphite"}`}>
+              <p className={`max-w-prose ${heroPhoto ? "text-white/90" : "text-graphite"}`}>
                 {description}
               </p>
             )}
@@ -77,7 +77,7 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
               href={whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="self-start mt-2 bg-accent text-paper font-bold px-8 py-4 rounded-full shadow-lg text-base md:text-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+              className="self-start mt-2 bg-accent text-white font-bold px-8 py-4 rounded-full shadow-lg text-base md:text-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
             >
               Falar no WhatsApp
             </a>
@@ -186,7 +186,7 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
             href={whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-accent text-paper font-bold px-8 py-4 rounded-full shadow-lg text-base md:text-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
+            className="bg-accent text-white font-bold px-8 py-4 rounded-full shadow-lg text-base md:text-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
           >
             Falar no WhatsApp
           </a>
