@@ -24,8 +24,32 @@ create table if not exists pillars (
   slug text not null unique check (slug in ('presentes', 'casamentos_eventos', 'corporativo', 'degustacao')),
   title text not null,
   description text not null,
+  intro text not null default '',
   photo_url text,
   display_order int not null default 0
+);
+
+-- ---------------------------------------------------------------------------
+-- occasion_photos (galeria de cada ocasião) + corporate_clients (logos)
+-- ---------------------------------------------------------------------------
+create table if not exists occasion_photos (
+  id uuid primary key default gen_random_uuid(),
+  occasion_slug text not null check (occasion_slug in ('presentes', 'casamentos_eventos', 'corporativo', 'degustacao')),
+  photo_url text not null default '',
+  caption text not null default '',
+  display_order int not null default 0,
+  active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+create index if not exists idx_occasion_photos_slug on occasion_photos (occasion_slug);
+
+create table if not exists corporate_clients (
+  id uuid primary key default gen_random_uuid(),
+  name text not null default '',
+  logo_url text,
+  display_order int not null default 0,
+  active boolean not null default true,
+  created_at timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------
@@ -111,6 +135,8 @@ alter table pillars enable row level security;
 alter table products enable row level security;
 alter table faq_items enable row level security;
 alter table testimonials enable row level security;
+alter table occasion_photos enable row level security;
+alter table corporate_clients enable row level security;
 alter table page_content enable row level security;
 
 -- Leitura pública (site institucional não exige login para visitantes)
@@ -125,6 +151,10 @@ create policy "public read active faq" on faq_items for select to anon using (ac
 create policy "admin read all faq" on faq_items for select to authenticated using (true);
 create policy "public read active testimonials" on testimonials for select to anon using (active = true);
 create policy "admin read all testimonials" on testimonials for select to authenticated using (true);
+create policy "public read active occasion_photos" on occasion_photos for select to anon using (active = true);
+create policy "admin read all occasion_photos" on occasion_photos for select to authenticated using (true);
+create policy "public read active corporate_clients" on corporate_clients for select to anon using (active = true);
+create policy "admin read all corporate_clients" on corporate_clients for select to authenticated using (true);
 
 -- Escrita: só usuário autenticado (o painel exige login; não há cadastro público de conta)
 create policy "admin write settings" on site_settings for all to authenticated using (true) with check (true);
@@ -132,6 +162,8 @@ create policy "admin write pillars" on pillars for all to authenticated using (t
 create policy "admin write products" on products for all to authenticated using (true) with check (true);
 create policy "admin write faq" on faq_items for all to authenticated using (true) with check (true);
 create policy "admin write testimonials" on testimonials for all to authenticated using (true) with check (true);
+create policy "admin write occasion_photos" on occasion_photos for all to authenticated using (true) with check (true);
+create policy "admin write corporate_clients" on corporate_clients for all to authenticated using (true) with check (true);
 create policy "admin write page_content" on page_content for all to authenticated using (true) with check (true);
 
 -- ---------------------------------------------------------------------------

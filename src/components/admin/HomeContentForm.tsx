@@ -25,7 +25,15 @@ export function HomeContentForm({
   });
   const [pillarValues, setPillarValues] = useState(
     Object.fromEntries(
-      pillars.map((p) => [p.id, { title: p.title, description: p.description, photo_url: p.photo_url }])
+      pillars.map((p) => [
+        p.id,
+        {
+          title: p.title,
+          description: p.description,
+          intro: p.intro ?? "",
+          photo_url: p.photo_url,
+        },
+      ])
     )
   );
   const [saving, setSaving] = useState(false);
@@ -39,7 +47,7 @@ export function HomeContentForm({
 
   function updatePillarField(
     id: string,
-    key: "title" | "description" | "photo_url",
+    key: "title" | "description" | "intro" | "photo_url",
     value: string
   ) {
     setPillarValues((prev) => ({ ...prev, [id]: { ...prev[id], [key]: value } }));
@@ -122,7 +130,10 @@ export function HomeContentForm({
 
       <div className="flex flex-col gap-4">
         <p className="text-xs font-semibold tracking-wider uppercase text-accent-ink">
-          Os 4 pilares
+          Os 4 pilares / ocasiões
+        </p>
+        <p className="text-xs text-graphite -mt-2">
+          Título, descrição e foto de cada card da Home — e também da página da ocasião.
         </p>
         {pillars.map((pillar) => (
           <div key={pillar.id} className="border border-line-soft p-3 flex flex-col gap-3">
@@ -140,11 +151,20 @@ export function HomeContentForm({
               />
             </label>
             <label className="flex flex-col gap-1 text-sm">
-              Descrição
+              Descrição (card e topo da página)
               <textarea
                 value={pillarValues[pillar.id]?.description ?? ""}
                 onChange={(e) => updatePillarField(pillar.id, "description", e.target.value)}
                 rows={2}
+                className="border border-line-soft px-3 py-2 bg-paper-raised"
+              />
+            </label>
+            <label className="flex flex-col gap-1 text-sm">
+              Texto de abertura da página da ocasião (opcional)
+              <textarea
+                value={pillarValues[pillar.id]?.intro ?? ""}
+                onChange={(e) => updatePillarField(pillar.id, "intro", e.target.value)}
+                rows={3}
                 className="border border-line-soft px-3 py-2 bg-paper-raised"
               />
             </label>

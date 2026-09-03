@@ -79,6 +79,7 @@ const pillarSchema = z.object({
   id: z.string().uuid(),
   title: z.string().trim().min(1).max(80),
   description: z.string().trim().min(1).max(300),
+  intro: z.string().trim().max(600).default(""),
   photo_url: photoUrlSchema,
 });
 
@@ -95,6 +96,91 @@ export async function updatePillar(input: unknown): Promise<ActionResult> {
   if (error) return { success: false, error: error.message };
 
   revalidatePath("/");
+  return { success: true };
+}
+
+const OCCASION_SLUGS = ["presentes", "casamentos_eventos", "corporativo", "degustacao"] as const;
+
+const occasionPhotoSchema = z.object({
+  id: z.string().uuid().optional(),
+  occasion_slug: z.enum(OCCASION_SLUGS),
+  photo_url: z.string().url("Envie uma foto"),
+  caption: z.string().trim().max(160).default(""),
+  display_order: z.number().int().default(0),
+  active: z.boolean().default(true),
+});
+
+export async function upsertOccasionPhoto(input: unknown): Promise<ActionResult> {
+  const parsed = occasionPhotoSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0].message };
+  }
+
+  const supabase = await createClient();
+  const { id, ...values } = parsed.data;
+
+  const { error } = id
+    ? await supabase.from("occasion_photos").update(values).eq("id", id)
+    : await supabase.from("occasion_photos").insert(values);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/[ocasiao]", "page");
+  return { success: true };
+}
+
+export async function deleteOccasionPhoto(id: string): Promise<ActionResult> {
+  if (!z.string().uuid().safeParse(id).success) {
+    return { success: false, error: "ID de foto inválido" };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("occasion_photos").delete().eq("id", id);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/[ocasiao]", "page");
+  return { success: true };
+}
+
+const corporateClientSchema = z.object({
+  id: z.string().uuid().optional(),
+  name: z.string().trim().min(1, "Informe o nome da empresa").max(120),
+  logo_url: photoUrlSchema,
+  display_order: z.number().int().default(0),
+  active: z.boolean().default(true),
+});
+
+export async function upsertCorporateClient(input: unknown): Promise<ActionResult> {
+  const parsed = corporateClientSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0].message };
+  }
+
+  const supabase = await createClient();
+  const { id, ...values } = parsed.data;
+
+  const { error } = id
+    ? await supabase.from("corporate_clients").update(values).eq("id", id)
+    : await supabase.from("corporate_clients").insert(values);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/corporativo");
+  return { success: true };
+}
+
+export async function deleteCorporateClient(id: string): Promise<ActionResult> {
+  if (!z.string().uuid().safeParse(id).success) {
+    return { success: false, error: "ID de cliente inválido" };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("corporate_clients").delete().eq("id", id);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/corporativo");
   return { success: true };
 }
 

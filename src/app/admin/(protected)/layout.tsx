@@ -3,6 +3,7 @@ import { LogoutButton } from "./LogoutButton";
 
 const NAV_ITEMS = [
   { href: "/admin/produtos", label: "Produtos" },
+  { href: "/admin/ocasioes", label: "Ocasiões" },
   { href: "/admin/paginas", label: "Páginas" },
   { href: "/admin/configuracoes", label: "Configurações" },
 ];

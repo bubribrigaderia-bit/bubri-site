@@ -1,21 +1,27 @@
 import { getSiteSettings } from "@/lib/data/settings";
 import { getPillars } from "@/lib/data/pillars";
 import { getActiveProducts } from "@/lib/data/products";
+import { getOccasionPhotos, getCorporateClients } from "@/lib/data/occasions";
 import type { Occasion } from "@/types/database";
 import { ProductCard } from "@/components/site/ProductCard";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
 export async function OccasionPage({ occasion }: { occasion: Occasion }) {
-  const [settings, pillars, products] = await Promise.all([
+  const isCorporate = occasion.value === "corporativo";
+
+  const [settings, pillars, products, gallery, clients] = await Promise.all([
     getSiteSettings(),
     getPillars(),
     getActiveProducts(),
+    getOccasionPhotos(occasion.value),
+    isCorporate ? getCorporateClients() : Promise.resolve([]),
   ]);
 
   const pillar = pillars.find((p) => p.slug === occasion.value);
   const title = pillar?.title ?? occasion.menuLabel;
   const description = pillar?.description ?? "";
+  const intro = pillar?.intro ?? "";
   const heroPhoto = pillar?.photo_url ?? null;
 
   const items = products.filter((p) => p.categories.includes(occasion.value));
@@ -71,7 +77,7 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
               href={whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="self-start mt-2 bg-accent text-paper font-semibold px-8 py-4 rounded-full shadow-lg text-base hover:opacity-90 hover:-translate-y-0.5 transition-all"
+              className="self-start mt-2 bg-accent text-paper font-bold px-8 py-4 rounded-full shadow-lg text-base hover:opacity-90 hover:-translate-y-0.5 transition-all"
             >
               Falar no WhatsApp
             </a>
@@ -91,6 +97,65 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
         </svg>
       </section>
 
+      {intro && (
+        <Reveal className="mx-auto max-w-3xl px-6 w-full">
+          <p className="text-lg leading-relaxed text-graphite text-balance">{intro}</p>
+        </Reveal>
+      )}
+
+      {gallery.length > 0 && (
+        <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
+          <h2 className="font-display text-2xl md:text-3xl text-ink">Um pouco do que a gente faz</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {gallery.map((photo, i) => (
+              <Reveal key={photo.id} delayMs={i * 70}>
+                <figure className="flex flex-col gap-1.5">
+                  <img
+                    src={photo.photo_url}
+                    alt={photo.caption || title}
+                    loading="lazy"
+                    className="aspect-[4/5] w-full rounded-2xl object-cover"
+                  />
+                  {photo.caption && (
+                    <figcaption className="text-xs text-graphite">{photo.caption}</figcaption>
+                  )}
+                </figure>
+              </Reveal>
+            ))}
+          </div>
+        </Reveal>
+      )}
+
+      {isCorporate && clients.length > 0 && (
+        <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
+          <h2 className="font-display text-2xl md:text-3xl text-ink">
+            Empresas que já fecharam com a Bubri
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {clients.map((client) => (
+              <div
+                key={client.id}
+                className="bg-paper-raised rounded-2xl p-5 flex items-center justify-center aspect-[3/2]"
+                title={client.name}
+              >
+                {client.logo_url ? (
+                  <img
+                    src={client.logo_url}
+                    alt={client.name}
+                    loading="lazy"
+                    className="max-h-16 max-w-full object-contain"
+                  />
+                ) : (
+                  <span className="font-display text-sm text-graphite text-center">
+                    {client.name}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      )}
+
       {items.length > 0 && (
         <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
           <h2 className="font-display text-2xl md:text-3xl text-ink">O que a Bubri oferece</h2>
@@ -106,25 +171,11 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
         </Reveal>
       )}
 
-      {/* Galeria de fotos da ocasião — entra no próximo passo */}
-      <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
-        <h2 className="font-display text-2xl md:text-3xl text-ink">Um pouco do que a gente faz</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="aspect-square rounded-2xl border border-dashed border-line bg-paper-raised flex items-center justify-center text-xs text-graphite"
-            >
-              fotos em breve
-            </div>
-          ))}
-        </div>
-      </Reveal>
-
-      {occasion.value === "corporativo" && (
-        <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
-          <h2 className="font-display text-2xl md:text-3xl text-ink">Empresas que já fecharam com a Bubri</h2>
-          <p className="text-sm text-graphite">Em breve os logos por aqui.</p>
+      {gallery.length === 0 && items.length === 0 && (
+        <Reveal className="mx-auto max-w-5xl px-6 w-full">
+          <div className="rounded-2xl border border-dashed border-line bg-paper-raised p-8 text-center text-sm text-graphite">
+            Conteúdo dessa ocasião chega em breve. Fale com a gente no WhatsApp!
+          </div>
         </Reveal>
       )}
 
@@ -135,7 +186,7 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
             href={whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-accent text-paper font-semibold px-8 py-4 rounded-full shadow-lg text-base hover:opacity-90 hover:-translate-y-0.5 transition-all"
+            className="bg-accent text-paper font-bold px-8 py-4 rounded-full shadow-lg text-base hover:opacity-90 hover:-translate-y-0.5 transition-all"
           >
             Falar no WhatsApp
           </a>

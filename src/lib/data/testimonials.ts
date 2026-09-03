@@ -12,7 +12,7 @@ export async function getActiveTestimonials(): Promise<Testimonial[]> {
 
   if (error) {
     // A tabela pode ainda não existir (antes da migração) — o site não deve cair por isso.
-    if (error.code === "42P01") return [];
+    if (error.code === "PGRST205" || error.code === "42P01") return [];
     throw new Error(`Falha ao carregar os depoimentos: ${error.message}`);
   }
 
@@ -28,7 +28,7 @@ export async function getAllTestimonialsForAdmin(): Promise<Testimonial[]> {
     .order("created_at", { ascending: false });
 
   if (error) {
-    if (error.code === "42P01") return [];
+    if (error.code === "PGRST205" || error.code === "42P01") return [];
     throw new Error(`Falha ao carregar os depoimentos: ${error.message}`);
   }
 

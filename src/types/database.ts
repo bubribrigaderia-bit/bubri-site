@@ -57,8 +57,28 @@ export type Pillar = {
   slug: ProductCategory;
   title: string;
   description: string;
+  intro: string;
   photo_url: string | null;
   display_order: number;
+};
+
+export type OccasionPhoto = {
+  id: string;
+  occasion_slug: ProductCategory;
+  photo_url: string;
+  caption: string;
+  display_order: number;
+  active: boolean;
+  created_at: string;
+};
+
+export type CorporateClient = {
+  id: string;
+  name: string;
+  logo_url: string | null;
+  display_order: number;
+  active: boolean;
+  created_at: string;
 };
 
 export type Product = {
@@ -130,6 +150,18 @@ export type Database = {
         Row: Testimonial;
         Insert: Partial<Testimonial>;
         Update: Partial<Testimonial>;
+        Relationships: [];
+      };
+      occasion_photos: {
+        Row: OccasionPhoto;
+        Insert: Partial<OccasionPhoto>;
+        Update: Partial<OccasionPhoto>;
+        Relationships: [];
+      };
+      corporate_clients: {
+        Row: CorporateClient;
+        Insert: Partial<CorporateClient>;
+        Update: Partial<CorporateClient>;
         Relationships: [];
       };
       page_content: {

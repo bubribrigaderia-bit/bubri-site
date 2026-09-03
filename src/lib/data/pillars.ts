@@ -12,5 +12,6 @@ export async function getPillars(): Promise<Pillar[]> {
     throw new Error(`Falha ao carregar os pilares da Home: ${error.message}`);
   }
 
-  return data;
+  // `intro` pode não existir antes da migração — normaliza para string.
+  return (data ?? []).map((p) => ({ ...p, intro: p.intro ?? "" }));
 }
