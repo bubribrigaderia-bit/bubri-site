@@ -25,7 +25,7 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col gap-20 pb-16">
-      <section className="relative isolate overflow-hidden flex items-center min-h-[70vh] md:min-h-[82vh]">
+      <section className="relative isolate overflow-hidden flex items-center min-h-[54vh] md:min-h-[62vh]">
         {heroPhoto ? (
           <>
             <img
@@ -50,7 +50,19 @@ export default async function HomePage() {
           </>
         )}
 
-        <div className="mx-auto max-w-5xl w-full px-6 py-20">
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute top-0 left-0 w-full h-8 md:h-12 text-paper -scale-y-100"
+          viewBox="0 0 1440 100"
+          preserveAspectRatio="none"
+        >
+          <path
+            fill="currentColor"
+            d="M0,64 C220,20 400,20 720,56 C1000,88 1200,92 1440,48 L1440,100 L0,100 Z"
+          />
+        </svg>
+
+        <div className="mx-auto max-w-5xl w-full px-6 py-16 md:py-20">
           <div className="flex flex-col gap-4 max-w-xl">
             <span
               className={`animate-fade-up text-xs font-semibold tracking-[0.2em] uppercase ${
@@ -90,7 +102,7 @@ export default async function HomePage() {
 
         <svg
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 left-0 w-full h-12 md:h-20 text-paper"
+          className="pointer-events-none absolute bottom-0 left-0 w-full h-10 md:h-16 text-paper"
           viewBox="0 0 1440 100"
           preserveAspectRatio="none"
         >
