@@ -69,7 +69,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`px-4 py-2.5 text-base font-medium text-ink hover:bg-ink hover:text-paper transition-colors ${
+                    className={`px-4 py-2.5 text-base font-medium text-ink hover:bg-accent-soft hover:text-accent-ink hover:font-bold transition-colors ${
                       i === OCCASION_LINKS.length - 1 ? "border-t-2 border-ink/25 mt-1 pt-3" : ""
                     }`}
                   >
