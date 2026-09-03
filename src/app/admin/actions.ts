@@ -6,13 +6,19 @@ import { createClient } from "@/lib/supabase/server";
 
 const CATEGORY_VALUES = ["presentes", "casamentos_eventos", "corporativo", "degustacao"] as const;
 
+// O campo de foto manda "" quando o admin clica em "Remover"; tratamos como "sem foto".
+const photoUrlSchema = z.preprocess(
+  (value) => (value === "" ? null : value),
+  z.string().url().nullable().default(null)
+);
+
 const productSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(1, "Informe o nome do produto").max(120),
   description: z.string().trim().max(400).default(""),
   price_label: z.string().trim().max(60).default(""),
   category: z.enum(CATEGORY_VALUES),
-  photo_url: z.string().url().nullable().default(null),
+  photo_url: photoUrlSchema,
   active: z.boolean().default(true),
   display_order: z.number().int().default(0),
 });
@@ -70,7 +76,7 @@ const pillarSchema = z.object({
   id: z.string().uuid(),
   title: z.string().trim().min(1).max(80),
   description: z.string().trim().min(1).max(300),
-  photo_url: z.string().url().nullable().default(null),
+  photo_url: photoUrlSchema,
 });
 
 export async function updatePillar(input: unknown): Promise<ActionResult> {
