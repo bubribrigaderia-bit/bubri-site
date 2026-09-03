@@ -36,15 +36,20 @@ create table if not exists products (
   name text not null,
   description text not null default '',
   price_label text not null default '',
-  category text not null check (category in ('presentes', 'casamentos_eventos', 'corporativo', 'degustacao')),
+  -- um produto pode aparecer em mais de uma categoria
+  categories text[] not null default '{}',
   photo_url text,
   active boolean not null default true,
   display_order int not null default 0,
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  constraint products_categories_valid check (
+    array_length(categories, 1) >= 1
+    and categories <@ array['presentes', 'casamentos_eventos', 'corporativo', 'degustacao']::text[]
+  )
 );
 
-create index if not exists idx_products_category on products (category);
+create index if not exists idx_products_categories on products using gin (categories);
 create index if not exists idx_products_active on products (active);
 
 -- ---------------------------------------------------------------------------

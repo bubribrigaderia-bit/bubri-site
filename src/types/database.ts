@@ -43,7 +43,7 @@ export type Product = {
   name: string;
   description: string;
   price_label: string;
-  category: ProductCategory;
+  categories: ProductCategory[];
   photo_url: string | null;
   active: boolean;
   display_order: number;

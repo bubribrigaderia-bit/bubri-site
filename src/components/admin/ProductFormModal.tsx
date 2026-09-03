@@ -18,16 +18,27 @@ export function ProductFormModal({
   const [name, setName] = useState(initialProduct?.name ?? "");
   const [description, setDescription] = useState(initialProduct?.description ?? "");
   const [priceLabel, setPriceLabel] = useState(initialProduct?.price_label ?? "");
-  const [category, setCategory] = useState<ProductCategory>(
-    initialProduct?.category ?? "presentes"
+  const [categories, setCategories] = useState<ProductCategory[]>(
+    initialProduct?.categories ?? ["presentes"]
   );
   const [photoUrl, setPhotoUrl] = useState<string | null>(initialProduct?.photo_url ?? null);
+
+  function toggleCategory(value: ProductCategory) {
+    setCategories((prev) =>
+      prev.includes(value) ? prev.filter((c) => c !== value) : [...prev, value]
+    );
+  }
   const [active, setActive] = useState(initialProduct?.active ?? true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    if (categories.length === 0) {
+      setError("Escolha ao menos uma categoria");
+      return;
+    }
+
     setSaving(true);
     setError(null);
 
@@ -36,7 +47,7 @@ export function ProductFormModal({
       name,
       description,
       price_label: priceLabel,
-      category,
+      categories,
       photo_url: photoUrl,
       active,
       display_order: initialProduct?.display_order ?? 0,
@@ -94,20 +105,19 @@ export function ProductFormModal({
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm">
-          Categoria
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value as ProductCategory)}
-            className="border border-line-soft px-3 py-2 bg-paper-raised"
-          >
-            {PRODUCT_CATEGORIES.map((c) => (
-              <option key={c.value} value={c.value}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <fieldset className="flex flex-col gap-2 text-sm">
+          <legend className="mb-1">Categorias (pode marcar mais de uma)</legend>
+          {PRODUCT_CATEGORIES.map((c) => (
+            <label key={c.value} className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={categories.includes(c.value)}
+                onChange={() => toggleCategory(c.value)}
+              />
+              {c.label}
+            </label>
+          ))}
+        </fieldset>
 
         <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" checked={active} onChange={(e) => setActive(e.target.checked)} />

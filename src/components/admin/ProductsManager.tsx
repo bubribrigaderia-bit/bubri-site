@@ -20,7 +20,7 @@ export function ProductsManager({ initialProducts }: { initialProducts: Product[
   const visibleProducts =
     filter === "todos"
       ? initialProducts
-      : initialProducts.filter((p) => p.category === filter);
+      : initialProducts.filter((p) => p.categories.includes(filter));
 
   async function handleToggleActive(product: Product) {
     setBusyId(product.id);
@@ -94,8 +94,11 @@ export function ProductsManager({ initialProducts }: { initialProducts: Product[
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-sm truncate">{product.name}</p>
                 <p className="text-xs text-graphite truncate">
-                  {PRODUCT_CATEGORIES.find((c) => c.value === product.category)?.label} ·{" "}
-                  {product.price_label}
+                  {product.categories
+                    .map((value) => PRODUCT_CATEGORIES.find((c) => c.value === value)?.label)
+                    .filter(Boolean)
+                    .join(", ")}
+                  {product.price_label ? ` · ${product.price_label}` : ""}
                 </p>
               </div>
 

@@ -17,7 +17,10 @@ const productSchema = z.object({
   name: z.string().trim().min(1, "Informe o nome do produto").max(120),
   description: z.string().trim().max(400).default(""),
   price_label: z.string().trim().max(60).default(""),
-  category: z.enum(CATEGORY_VALUES),
+  categories: z
+    .array(z.enum(CATEGORY_VALUES))
+    .min(1, "Escolha ao menos uma categoria")
+    .refine((list) => new Set(list).size === list.length, "Categoria repetida"),
   photo_url: photoUrlSchema,
   active: z.boolean().default(true),
   display_order: z.number().int().default(0),

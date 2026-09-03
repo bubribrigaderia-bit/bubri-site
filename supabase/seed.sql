@@ -16,23 +16,23 @@ insert into pillars (slug, title, description, display_order) values
   ('corporativo', 'Brindes corporativos', 'Kits com a identidade da sua empresa para presentear clientes, parceiros e equipes com bom gosto.', 3),
   ('degustacao', 'Degustação em 24h', 'Não precisa de um grande motivo: peça a caixa degustação de doces finos e viva uma experiência diferente em até 24 horas.', 4);
 
-insert into products (name, description, price_label, category, display_order) values
-  ('Gift Cookies', '6 cookies artesanais em caixa presenteável', 'R$75', 'presentes', 1),
-  ('Doces finos avulsos', 'Avelã, pistache, pão de mel, camafeu e mais — mín. 20 unid/sabor', 'a partir de R$4,10/unid', 'presentes', 2),
-  ('Cesta Café da Manhã', 'Clássica ou Premium, com pães, frutas e brigadeiros', 'R$250 / R$290', 'presentes', 3),
-  ('Mini Pão de Mel', '6 unidades com doce de leite artesanal, em latinha', 'R$45', 'presentes', 4),
-  ('Box Celebração', 'Mini bolo, 15 brigadeiros, 2 brownies, bebida e flores', 'R$190', 'presentes', 5),
+insert into products (name, description, price_label, categories, display_order) values
+  ('Gift Cookies', '6 cookies artesanais em caixa presenteável', 'R$75', array['presentes'], 1),
+  ('Doces finos avulsos', 'Avelã, pistache, pão de mel, camafeu e mais — mín. 20 unid/sabor', 'a partir de R$4,10/unid', array['presentes'], 2),
+  ('Cesta Café da Manhã', 'Clássica ou Premium, com pães, frutas e brigadeiros', 'R$250 / R$290', array['presentes'], 3),
+  ('Mini Pão de Mel', '6 unidades com doce de leite artesanal, em latinha', 'R$45', array['presentes'], 4),
+  ('Box Celebração', 'Mini bolo, 15 brigadeiros, 2 brownies, bebida e flores', 'R$190', array['presentes'], 5),
 
-  ('Doce Brinde', '12 brigadeiros + bebida (espumante ou cerveja)', 'a partir de R$90', 'casamentos_eventos', 1),
-  ('Brigadeiros para mesa de festa', 'Mín. 50 unid, 10 por sabor', 'a partir de R$3,20/unid', 'casamentos_eventos', 2),
-  ('Lembrancinha para convidados', 'Mini pão de mel, 6 unidades em latinha', 'R$45', 'casamentos_eventos', 3),
+  ('Doce Brinde', '12 brigadeiros + bebida (espumante ou cerveja)', 'a partir de R$90', array['casamentos_eventos'], 1),
+  ('Brigadeiros para mesa de festa', 'Mín. 50 unid, 10 por sabor', 'a partir de R$3,20/unid', array['casamentos_eventos'], 2),
+  ('Lembrancinha para convidados', 'Mini pão de mel, 6 unidades em latinha', 'R$45', array['casamentos_eventos'], 3),
 
-  ('Doces Finos personalizados', 'Tampa/tag com a logo da empresa — mín. 5 unid', '20 unid R$170', 'corporativo', 1),
-  ('Latinha Personalizada', 'Recheada, com a logo da empresa — mín. 10 unid', 'R$25', 'corporativo', 2),
-  ('Gift Box', 'Mini espumante, 2 pães de mel e latinha personalizada', 'R$150', 'corporativo', 3),
-  ('Cesta Personalizada', 'Composição sob medida para o perfil da empresa', 'sob consulta', 'corporativo', 4),
+  ('Doces Finos personalizados', 'Tampa/tag com a logo da empresa — mín. 5 unid', '20 unid R$170', array['corporativo'], 1),
+  ('Latinha Personalizada', 'Recheada, com a logo da empresa — mín. 10 unid', 'R$25', array['corporativo'], 2),
+  ('Gift Box', 'Mini espumante, 2 pães de mel e latinha personalizada', 'R$150', array['corporativo'], 3),
+  ('Cesta Personalizada', 'Composição sob medida para o perfil da empresa', 'sob consulta', array['corporativo'], 4),
 
-  ('Caixa Degustação de Doces Finos', 'Caixa de madeira, 25 unidades, 12 sabores', 'R$170', 'degustacao', 1);
+  ('Caixa Degustação de Doces Finos', 'Caixa de madeira, 25 unidades, 12 sabores', 'R$170', array['degustacao'], 1);
 
 insert into faq_items (question, answer, display_order) values
   ('Como funciona a degustação em 24h?', 'Você escolhe a caixa degustação de doces finos, confirma pelo WhatsApp e recebe em até 24 horas. Não precisa de um motivo especial: serve tanto pra conhecer os sabores antes de um evento quanto só pra viver uma experiência diferente.', 1),
