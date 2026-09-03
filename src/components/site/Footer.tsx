@@ -10,13 +10,7 @@ export function Footer({
   return (
     <footer className="border-t border-line-soft mt-16">
       <div className="mx-auto max-w-5xl px-6 py-8 flex flex-wrap items-center justify-between gap-3 text-sm text-graphite">
-        <img
-          src="/logo-bubri.png?v=2"
-          alt="Bubri Confeitaria"
-          width={880}
-          height={681}
-          className="h-12 w-auto"
-        />
+        <span className="font-display text-xl italic text-ink">bubri confeitaria</span>
         <span>
           Instagram @{instagramHandle} · WhatsApp {formatPhoneForDisplay(whatsappNumber)}
         </span>
