@@ -24,18 +24,25 @@ export function ImageUploadField({
     setUploading(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.set("file", file);
-    const result = await uploadImage(formData);
+    try {
+      const formData = new FormData();
+      formData.set("file", file);
+      const result = await uploadImage(formData);
 
-    setUploading(false);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
 
-    if (!result.success) {
-      setError(result.error);
-      return;
+      onChange(result.url);
+    } catch {
+      setError(
+        "Não foi possível enviar a foto. Tente uma imagem menor (até 5MB) ou tente de novo."
+      );
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
     }
-
-    onChange(result.url);
   }
 
   return (
