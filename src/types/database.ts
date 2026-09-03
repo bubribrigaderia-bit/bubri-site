@@ -5,10 +5,10 @@ export type ProductCategory =
   | "degustacao";
 
 export const PRODUCT_CATEGORIES: { value: ProductCategory; label: string }[] = [
-  { value: "presentes", label: "Presentes finos" },
+  { value: "presentes", label: "Para presentear" },
   { value: "casamentos_eventos", label: "Casamentos & Eventos" },
   { value: "corporativo", label: "Corporativo" },
-  { value: "degustacao", label: "Degustação 24h" },
+  { value: "degustacao", label: "Kit degustação" },
 ];
 
 export type PageKey = "home" | "sobre" | "contato";
