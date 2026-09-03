@@ -90,7 +90,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-display text-lg bg-gold text-ink px-6 py-2 rounded-full border-2 border-gold shadow-sm hover:opacity-90 transition-opacity"
+              className="font-display text-lg text-ink px-6 py-2 rounded-full border-[3px] border-gold hover:bg-accent-soft transition-colors"
             >
               Fale conosco
             </a>
@@ -111,7 +111,7 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-display text-base bg-gold text-ink px-5 py-1.5 rounded-full border-2 border-gold"
+              className="font-display text-base text-ink px-5 py-1.5 rounded-full border-[3px] border-gold"
             >
               Fale conosco
             </a>
