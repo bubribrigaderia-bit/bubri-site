@@ -15,36 +15,36 @@ export default async function ContatoPage() {
   ]);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10 flex flex-col gap-8">
-      <h1 className="text-2xl font-bold">Contato</h1>
+    <div className="mx-auto max-w-5xl px-6 py-12 flex flex-col gap-10">
+      <h1 className="font-display text-4xl">Contato</h1>
 
       <a
         href={buildWhatsAppLink(settings.whatsapp_number, "Oi! Vim pelo site da Bubri.")}
         target="_blank"
         rel="noopener noreferrer"
-        className="border border-accent text-accent-ink font-bold text-center px-4 py-3 hover:bg-accent-soft transition-colors"
+        className="bg-accent text-paper font-bold text-center px-6 py-4 rounded-2xl hover:opacity-90 hover:-translate-y-0.5 transition-all"
       >
         Chamar no WhatsApp — {formatPhoneForDisplay(settings.whatsapp_number)}
       </a>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="border border-line-soft p-3 flex flex-col gap-1">
-          <p className="font-bold text-sm">Atendimento</p>
-          <p className="text-xs text-graphite">{settings.business_hours}</p>
+        <div className="bg-paper-raised rounded-2xl p-4 flex flex-col gap-1">
+          <p className="font-display text-base">Atendimento</p>
+          <p className="text-sm text-graphite">{settings.business_hours}</p>
         </div>
-        <div className="border border-line-soft p-3 flex flex-col gap-1">
-          <p className="font-bold text-sm">Entrega</p>
-          <p className="text-xs text-graphite">{settings.delivery_text}</p>
+        <div className="bg-paper-raised rounded-2xl p-4 flex flex-col gap-1">
+          <p className="font-display text-base">Entrega</p>
+          <p className="text-sm text-graphite">{settings.delivery_text}</p>
         </div>
-        <div className="border border-line-soft p-3 flex flex-col gap-1">
-          <p className="font-bold text-sm">Encomendas</p>
-          <p className="text-xs text-graphite">{content.prazo_pequenos}</p>
-          <p className="text-xs text-graphite">{content.prazo_grandes}</p>
+        <div className="bg-paper-raised rounded-2xl p-4 flex flex-col gap-1">
+          <p className="font-display text-base">Encomendas</p>
+          <p className="text-sm text-graphite">{content.prazo_pequenos}</p>
+          <p className="text-sm text-graphite">{content.prazo_grandes}</p>
         </div>
       </div>
 
-      <section className="flex flex-col gap-2">
-        <p className="text-xs font-semibold tracking-wider uppercase text-accent-ink">
+      <section className="flex flex-col gap-3">
+        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink">
           Perguntas frequentes
         </p>
         <FaqAccordion items={faqItems} />

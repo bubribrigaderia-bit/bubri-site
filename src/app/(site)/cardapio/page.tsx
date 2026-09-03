@@ -10,10 +10,10 @@ export default async function CardapioPage() {
   const grouped = groupProductsByCategory(products);
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10 flex flex-col gap-6">
+    <div className="mx-auto max-w-5xl px-6 py-12 flex flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold">Cardápio</h1>
-        <p className="text-graphite text-sm max-w-prose">
+        <h1 className="font-display text-4xl">Cardápio</h1>
+        <p className="text-graphite max-w-prose">
           Cada linha da Bubri foi pensada para uma ocasião diferente. Escolha a categoria e fale
           com a gente para montar o kit ideal.
         </p>

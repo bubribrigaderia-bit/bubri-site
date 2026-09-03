@@ -12,9 +12,13 @@ export function ProductCard({
   const message = `Oi! Vim pelo site e tenho interesse no "${product.name}".`;
 
   return (
-    <div className="border border-line-soft flex flex-col gap-2 p-3">
-      <PhotoOrPlaceholder src={product.photo_url} alt={product.name} className="h-28 w-full" />
-      <p className="font-bold text-sm">{product.name}</p>
+    <div className="bg-paper-raised rounded-2xl flex flex-col gap-2 p-4 transition-transform hover:-translate-y-1 hover:shadow-md">
+      <PhotoOrPlaceholder
+        src={product.photo_url}
+        alt={product.name}
+        className="h-28 w-full rounded-xl"
+      />
+      <p className="font-display text-base mt-1">{product.name}</p>
       <p className="text-xs text-graphite leading-relaxed">{product.description}</p>
       <div className="flex items-center justify-between text-xs mt-1">
         <span className="text-graphite">{product.price_label}</span>

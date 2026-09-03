@@ -23,8 +23,10 @@ export function CardapioTabs({
         <button
           type="button"
           onClick={() => setActive("todos")}
-          className={`text-xs px-3 py-1.5 border ${
-            active === "todos" ? "border-ink font-semibold" : "border-line-soft text-graphite"
+          className={`text-sm px-4 py-1.5 rounded-full border transition-colors ${
+            active === "todos"
+              ? "bg-accent border-accent text-paper font-semibold"
+              : "border-line-soft text-graphite hover:border-accent"
           }`}
         >
           Todos
@@ -34,10 +36,10 @@ export function CardapioTabs({
             key={category.value}
             type="button"
             onClick={() => setActive(category.value)}
-            className={`text-xs px-3 py-1.5 border ${
+            className={`text-sm px-4 py-1.5 rounded-full border transition-colors ${
               active === category.value
-                ? "border-ink font-semibold"
-                : "border-line-soft text-graphite"
+                ? "bg-accent border-accent text-paper font-semibold"
+                : "border-line-soft text-graphite hover:border-accent"
             }`}
           >
             {category.label}
@@ -51,7 +53,7 @@ export function CardapioTabs({
 
         return (
           <section key={category.value} className="flex flex-col gap-4">
-            <p className="text-xs font-semibold tracking-wider uppercase text-accent-ink">
+            <p className="font-display text-2xl italic">
               {category.label}
             </p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
