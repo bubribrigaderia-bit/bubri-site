@@ -12,12 +12,15 @@ export function ImageUploadField({
   value,
   onChange,
   aspect = 4 / 3,
+  exportMaxWidth = 1600,
 }: {
   label: string;
   value: string | null;
   onChange: (url: string) => void;
   /** Proporção do recorte (largura / altura). Padrão 4:3. */
   aspect?: number;
+  /** Largura máxima do JPEG gerado. Maior para fotos que ocupam a tela toda. */
+  exportMaxWidth?: number;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -58,7 +61,8 @@ export function ImageUploadField({
       const croppedFile = await getCroppedImageFile(
         editing.src,
         cropPixels,
-        editing.fileName
+        editing.fileName,
+        exportMaxWidth
       );
 
       const formData = new FormData();

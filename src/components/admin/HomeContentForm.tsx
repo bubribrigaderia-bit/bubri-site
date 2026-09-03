@@ -83,10 +83,11 @@ export function HomeContentForm({
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4">
         <ImageUploadField
-          label="Foto de destaque (hero)"
+          label="Foto de destaque (hero) — aparece atrás do título, ocupando o bloco todo"
           value={fields.foto_hero_url || null}
           onChange={(url) => updateField("foto_hero_url", url)}
-          aspect={3 / 2}
+          aspect={16 / 9}
+          exportMaxWidth={2400}
         />
         <label className="flex flex-col gap-1 text-sm">
           Frase de destaque (headline)

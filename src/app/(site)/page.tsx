@@ -3,7 +3,6 @@ import { getSiteSettings } from "@/lib/data/settings";
 import { getPillars } from "@/lib/data/pillars";
 import { getPageContent } from "@/lib/data/content";
 import { PillarCard } from "@/components/site/PillarCard";
-import { PhotoOrPlaceholder } from "@/components/site/PhotoOrPlaceholder";
 import { OrganicBlob } from "@/components/site/OrganicBlob";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
@@ -20,29 +19,57 @@ export default async function HomePage() {
     "Oi! Vim pelo site e quero pedir a caixa degustação."
   );
 
+  const heroPhoto = content.foto_hero_url || null;
+
   return (
     <div className="flex flex-col gap-20 pb-16">
-      <section className="relative overflow-hidden">
-        <OrganicBlob
-          className="absolute inset-0 h-full w-full -z-10 text-accent-soft"
-          color="var(--accent-soft)"
-        />
-        <div className="mx-auto max-w-5xl px-6 pt-14 pb-16 grid gap-8 md:grid-cols-[1.1fr_1fr] items-center">
-          <div className="flex flex-col gap-4">
+      <section className="relative isolate overflow-hidden flex items-center min-h-[70vh] md:min-h-[82vh]">
+        {heroPhoto ? (
+          <>
+            <img
+              src={heroPhoto}
+              alt=""
+              aria-hidden="true"
+              fetchPriority="high"
+              className="absolute inset-0 -z-20 h-full w-full object-cover"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 -z-10 bg-gradient-to-r from-black/75 via-black/55 to-black/20 md:to-transparent"
+            />
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 -z-20 bg-accent-soft" />
+            <OrganicBlob
+              className="absolute inset-0 -z-10 h-full w-full"
+              color="var(--accent)"
+            />
+          </>
+        )}
+
+        <div className="mx-auto max-w-5xl w-full px-6 py-20">
+          <div className="flex flex-col gap-4 max-w-xl">
             <span
-              className="animate-fade-up text-xs font-semibold tracking-[0.2em] uppercase text-accent-ink"
+              className={`animate-fade-up text-xs font-semibold tracking-[0.2em] uppercase ${
+                heroPhoto ? "text-paper/80" : "text-accent-ink"
+              }`}
               style={{ animationDelay: "0ms" }}
             >
               {content.hero_eyebrow}
             </span>
             <h1
-              className="animate-fade-up font-display text-4xl md:text-5xl leading-[1.1] text-balance"
+              className={`animate-fade-up font-display text-4xl md:text-5xl leading-[1.1] text-balance ${
+                heroPhoto ? "text-paper" : "text-ink"
+              }`}
               style={{ animationDelay: "80ms" }}
             >
               {content.hero_headline}
             </h1>
             <p
-              className="animate-fade-up text-graphite max-w-prose"
+              className={`animate-fade-up max-w-prose ${
+                heroPhoto ? "text-paper/85" : "text-graphite"
+              }`}
               style={{ animationDelay: "160ms" }}
             >
               {content.hero_subheadline}
@@ -51,21 +78,11 @@ export default async function HomePage() {
               href={heroWhatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="animate-fade-up self-start mt-2 bg-accent text-paper font-semibold px-6 py-3 rounded-full hover:opacity-90 hover:-translate-y-0.5 transition-all"
+              className="animate-fade-up self-start mt-2 bg-accent text-paper font-semibold px-6 py-3 rounded-full shadow-lg hover:opacity-90 hover:-translate-y-0.5 transition-all"
               style={{ animationDelay: "240ms" }}
             >
               {content.hero_cta}
             </a>
-          </div>
-          <div
-            className="animate-fade-up rounded-[2rem] overflow-hidden"
-            style={{ animationDelay: "160ms" }}
-          >
-            <PhotoOrPlaceholder
-              src={content.foto_hero_url || null}
-              alt="Foto de destaque da Bubri"
-              className="h-64 md:h-80 w-full"
-            />
           </div>
         </div>
       </section>
