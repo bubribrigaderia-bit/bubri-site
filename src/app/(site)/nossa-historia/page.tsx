@@ -35,10 +35,13 @@ export default async function NossaHistoriaPage() {
       </section>
 
       <Reveal className="flex flex-col gap-6">
-        <h2 className="font-display text-2xl md:text-3xl text-ink">Nossos valores</h2>
+        <h2 className="font-display text-4xl md:text-5xl text-accent-ink">Nossos valores</h2>
         <div className="grid gap-5 sm:grid-cols-3">
           {values.map((value) => (
-            <div key={value.title} className="bg-paper-raised rounded-2xl p-5 flex flex-col gap-1.5">
+            <div
+              key={value.title}
+              className="bg-paper-raised rounded-2xl border-2 border-gold p-5 flex flex-col gap-1.5"
+            >
               <p className="font-display text-lg">{value.title}</p>
               <p className="text-sm text-graphite">{value.description}</p>
             </div>

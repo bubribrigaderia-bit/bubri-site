@@ -137,10 +137,10 @@ export default async function HomePage() {
               {testimonials.map((t) => (
                 <figure
                   key={t.id}
-                  className="snap-start shrink-0 w-[290px] md:w-[340px] bg-paper-raised rounded-2xl p-6 flex flex-col gap-3"
+                  className="snap-start shrink-0 w-[290px] md:w-[340px] bg-paper-raised rounded-2xl border-2 border-gold p-6 flex flex-col gap-3"
                 >
                   <div
-                    className="text-accent tracking-widest text-sm"
+                    className="text-gold tracking-widest text-xl"
                     aria-label={`${t.rating} de 5 estrelas`}
                   >
                     {"★".repeat(t.rating)}
@@ -149,7 +149,7 @@ export default async function HomePage() {
                   <blockquote className="text-sm text-ink leading-relaxed">
                     “{t.text}”
                   </blockquote>
-                  <figcaption className="mt-auto text-xs font-semibold text-graphite">
+                  <figcaption className="mt-auto text-base font-bold text-ink">
                     — {t.author_name}
                   </figcaption>
                 </figure>

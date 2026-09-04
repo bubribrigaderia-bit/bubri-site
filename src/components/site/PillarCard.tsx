@@ -14,9 +14,7 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
         alt={pillar.title}
         className="aspect-square w-full rounded-xl"
       />
-      <p className="font-display text-lg transition-colors group-hover:text-accent-ink">
-        {pillar.title}
-      </p>
+      <p className="font-display text-lg">{pillar.title}</p>
       <p className="text-sm text-graphite leading-relaxed">{pillar.description}</p>
       {href && (
         <span className="mt-1 text-sm font-bold text-accent-ink group-hover:underline">
@@ -27,7 +25,7 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
   );
 
   const cardClass =
-    "group bg-paper-raised rounded-2xl flex flex-col gap-3 p-4 border-2 border-transparent transition-all hover:-translate-y-1 hover:shadow-lg hover:border-gold hover:bg-accent-soft";
+    "group bg-paper-raised rounded-2xl flex flex-col gap-3 p-4 border-2 border-line-soft transition-all hover:-translate-y-1 hover:shadow-lg hover:border-gold";
 
   if (href) {
     return (

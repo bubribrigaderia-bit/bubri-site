@@ -32,11 +32,11 @@ export default async function ContatoPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 flex flex-col gap-8">
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="bg-paper-raised rounded-2xl p-5 flex flex-col gap-1.5">
+        <div className="bg-paper-raised rounded-2xl border-2 border-gold p-5 flex flex-col gap-1.5">
           <p className="font-display text-lg text-accent-ink">Atendimento</p>
           <p className="text-sm text-graphite">{settings.business_hours}</p>
         </div>
-        <div className="bg-paper-raised rounded-2xl p-5 flex flex-col gap-1.5">
+        <div className="bg-paper-raised rounded-2xl border-2 border-gold p-5 flex flex-col gap-1.5">
           <p className="font-display text-lg text-accent-ink">Entrega</p>
           {deliveryParagraphs.map((p, i) => (
             <p key={i} className="text-sm text-graphite">
@@ -46,7 +46,7 @@ export default async function ContatoPage() {
         </div>
       </div>
 
-      <div className="bg-paper-raised rounded-2xl p-6 md:p-8 flex flex-col gap-3">
+      <div className="bg-paper-raised rounded-2xl border-2 border-gold p-6 md:p-8 flex flex-col gap-3">
         <p className="font-display text-xl text-accent-ink">Sobre a Bubri</p>
         {SOBRE_BUBRI.map((p, i) => (
           <p key={i} className="text-sm text-graphite leading-relaxed">
@@ -56,10 +56,10 @@ export default async function ContatoPage() {
       </div>
 
       <section className="flex flex-col gap-5">
-        <h2 className="font-display text-3xl md:text-4xl text-gold">Perguntas frequentes</h2>
+        <h2 className="font-display text-4xl md:text-5xl text-accent-ink">Perguntas frequentes</h2>
         <FaqAccordion items={faqItems} />
 
-        <div className="mt-2 bg-paper-raised rounded-2xl p-6 md:p-8 flex flex-col items-start gap-4">
+        <div className="mt-2 bg-paper-raised rounded-2xl border-2 border-gold p-6 md:p-8 flex flex-col items-center text-center gap-4">
           <p className="font-display text-xl md:text-2xl text-ink">Ainda tem dúvidas?</p>
           <a
             href={whatsapp}
