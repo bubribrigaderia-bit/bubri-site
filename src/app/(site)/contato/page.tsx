@@ -32,12 +32,16 @@ export default async function ContatoPage() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 flex flex-col gap-8">
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="bg-paper-raised rounded-2xl border-2 border-gold p-5 flex flex-col gap-1.5">
-          <p className="font-display text-lg text-accent-ink">Atendimento</p>
+        <div className="bg-paper-raised rounded-2xl border-2 border-gold p-5 flex flex-col gap-3">
+          <p className="self-start font-display text-lg text-white bg-gold rounded-full px-4 py-1">
+            Atendimento
+          </p>
           <p className="text-sm text-graphite">{settings.business_hours}</p>
         </div>
-        <div className="bg-paper-raised rounded-2xl border-2 border-gold p-5 flex flex-col gap-1.5">
-          <p className="font-display text-lg text-accent-ink">Entrega</p>
+        <div className="bg-paper-raised rounded-2xl border-2 border-gold p-5 flex flex-col gap-3">
+          <p className="self-start font-display text-lg text-white bg-gold rounded-full px-4 py-1">
+            Entrega
+          </p>
           {deliveryParagraphs.map((p, i) => (
             <p key={i} className="text-sm text-graphite">
               {p}
@@ -47,7 +51,9 @@ export default async function ContatoPage() {
       </div>
 
       <div className="bg-paper-raised rounded-2xl border-2 border-gold p-6 md:p-8 flex flex-col gap-3">
-        <p className="font-display text-xl text-accent-ink">Sobre a Bubri</p>
+        <p className="self-start font-display text-xl text-white bg-gold rounded-full px-5 py-1.5 mb-1">
+          Sobre a Bubri
+        </p>
         {SOBRE_BUBRI.map((p, i) => (
           <p key={i} className="text-sm text-graphite leading-relaxed">
             {p}
