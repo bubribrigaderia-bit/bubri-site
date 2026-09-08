@@ -49,7 +49,7 @@ export function CorporateClientFormModal({
         className="bg-paper w-full max-w-md p-6 flex flex-col gap-4 max-h-[90vh] overflow-y-auto"
       >
         <h2 className="font-bold text-lg">
-          {initialItem ? "Editar empresa" : "Nova empresa"}
+          {initialItem ? "Editar cliente" : "Novo cliente"}
         </h2>
 
         <label className="flex flex-col gap-1 text-sm">

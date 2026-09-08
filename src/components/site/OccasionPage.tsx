@@ -174,11 +174,26 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
         </Reveal>
       )}
 
+      {items.length > 0 && (
+        <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-8">
+          <h2 className="font-display text-2xl md:text-3xl text-ink">O que a Bubri oferece</h2>
+
+          {nichedGroups.map(({ niche, products: group }) => (
+            <div key={niche.value} className="flex flex-col gap-4">
+              <h3 className="font-display text-xl md:text-2xl text-accent-ink">{niche.label}</h3>
+              <ProductGrid products={group} whatsappNumber={settings.whatsapp_number} />
+            </div>
+          ))}
+
+          {ungrouped.length > 0 && (
+            <ProductGrid products={ungrouped} whatsappNumber={settings.whatsapp_number} />
+          )}
+        </Reveal>
+      )}
+
       {isCorporate && clients.length > 0 && (
         <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
-          <h2 className="font-display text-2xl md:text-3xl text-ink">
-            Empresas que já fecharam com a Bubri
-          </h2>
+          <h2 className="font-display text-2xl md:text-3xl text-ink">Alguns dos nossos clientes</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {clients.map((client) => (
               <div
@@ -201,23 +216,6 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
               </div>
             ))}
           </div>
-        </Reveal>
-      )}
-
-      {items.length > 0 && (
-        <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-8">
-          <h2 className="font-display text-2xl md:text-3xl text-ink">O que a Bubri oferece</h2>
-
-          {nichedGroups.map(({ niche, products: group }) => (
-            <div key={niche.value} className="flex flex-col gap-4">
-              <h3 className="font-display text-xl md:text-2xl text-accent-ink">{niche.label}</h3>
-              <ProductGrid products={group} whatsappNumber={settings.whatsapp_number} />
-            </div>
-          ))}
-
-          {ungrouped.length > 0 && (
-            <ProductGrid products={ungrouped} whatsappNumber={settings.whatsapp_number} />
-          )}
         </Reveal>
       )}
 

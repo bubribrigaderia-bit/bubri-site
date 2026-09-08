@@ -20,9 +20,9 @@ export default async function AdminOcasioesPage() {
     <div className="flex flex-col gap-6">
       <h1 className="text-xl font-bold">Ocasiões</h1>
       <p className="text-sm text-graphite">
-        Galeria de fotos, ordem dos produtos e, no Corporativo, os logos das empresas que já
-        fecharam. Os textos e a foto principal de cada ocasião ficam em Páginas → Home → Os 4
-        pilares.
+        Galeria de fotos, ordem dos produtos e, no Corporativo, os logos do bloco &quot;Alguns dos
+        nossos clientes&quot;. Os textos e a foto principal de cada ocasião ficam em Páginas → Home
+        → Os 4 pilares.
       </p>
       <OcasioesManager
         photos={photos}

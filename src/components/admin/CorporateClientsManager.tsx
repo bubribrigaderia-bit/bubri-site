@@ -28,10 +28,11 @@ export function CorporateClientsManager({ initialItems }: { initialItems: Corpor
       <div className="flex justify-between items-center">
         <div>
           <p className="text-xs font-semibold tracking-wider uppercase text-accent-ink">
-            Empresas que já fecharam
+            Alguns dos nossos clientes
           </p>
           <p className="text-xs text-graphite mt-1">
-            Aparecem numa faixa de logos na página Corporativo.
+            Logos que aparecem no bloco &quot;Alguns dos nossos clientes&quot;, no fim da página
+            Corporativo. Suba um PNG com fundo transparente para cada cliente.
           </p>
         </div>
         <button
@@ -39,13 +40,13 @@ export function CorporateClientsManager({ initialItems }: { initialItems: Corpor
           onClick={() => setModal({ mode: "create" })}
           className="border border-accent text-accent-ink font-semibold px-4 py-2 text-sm hover:bg-accent-soft transition-colors shrink-0"
         >
-          + Nova empresa
+          + Novo cliente
         </button>
       </div>
 
       {initialItems.length === 0 ? (
         <p className="border border-dashed border-line-soft p-4 text-sm text-graphite text-center">
-          Nenhuma empresa ainda.
+          Nenhum cliente ainda.
         </p>
       ) : (
         <div className="flex flex-col gap-2">

@@ -20,9 +20,15 @@ export function ProductCard({
       />
       <p className="font-display text-lg mt-1">{product.name}</p>
       {product.description && (
-        <p className="text-sm text-graphite leading-relaxed line-clamp-5">
-          {product.description}
-        </p>
+        <div className="flex flex-col gap-2 text-sm text-graphite leading-relaxed">
+          {product.description
+            .split(/\n+/)
+            .map((p) => p.trim())
+            .filter(Boolean)
+            .map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+        </div>
       )}
       <div className="mt-auto flex items-center justify-between gap-3 pt-2 text-xs">
         <span className="text-graphite">{product.price_label}</span>
