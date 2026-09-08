@@ -1,21 +1,43 @@
 import { getSiteSettings } from "@/lib/data/settings";
 import { getPillars } from "@/lib/data/pillars";
 import { getActiveProducts } from "@/lib/data/products";
-import { getOccasionPhotos, getCorporateClients } from "@/lib/data/occasions";
-import type { Occasion } from "@/types/database";
+import {
+  getOccasionPhotos,
+  getCorporateClients,
+  getProductOccasionMeta,
+} from "@/lib/data/occasions";
+import type { Occasion, Product } from "@/types/database";
+import { occasionNiches } from "@/types/database";
 import { ProductCard } from "@/components/site/ProductCard";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
+function ProductGrid({
+  products,
+  whatsappNumber,
+}: {
+  products: Product[];
+  whatsappNumber: string;
+}) {
+  return (
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} whatsappNumber={whatsappNumber} />
+      ))}
+    </div>
+  );
+}
+
 export async function OccasionPage({ occasion }: { occasion: Occasion }) {
   const isCorporate = occasion.value === "corporativo";
 
-  const [settings, pillars, products, gallery, clients] = await Promise.all([
+  const [settings, pillars, products, gallery, clients, meta] = await Promise.all([
     getSiteSettings(),
     getPillars(),
     getActiveProducts(),
     getOccasionPhotos(occasion.value),
     isCorporate ? getCorporateClients() : Promise.resolve([]),
+    getProductOccasionMeta(occasion.value),
   ]);
 
   const pillar = pillars.find((p) => p.slug === occasion.value);
@@ -24,7 +46,33 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
   const intro = pillar?.intro ?? "";
   const heroPhoto = pillar?.photo_url ?? null;
 
-  const items = products.filter((p) => p.categories.includes(occasion.value));
+  // Ordem por ocasião: quem tem `position` na tabela `product_occasion_meta`
+  // manda; sem meta, cai no comportamento antigo (display_order global + nome).
+  const metaByProduct = new Map(meta.map((m) => [m.product_id, m]));
+  const positionOf = (p: Product) =>
+    metaByProduct.get(p.id)?.position ?? Number.MAX_SAFE_INTEGER;
+
+  const items = products
+    .filter((p) => p.categories.includes(occasion.value))
+    .sort(
+      (a, b) =>
+        positionOf(a) - positionOf(b) ||
+        a.display_order - b.display_order ||
+        a.name.localeCompare(b.name, "pt-BR")
+    );
+
+  // Nichos (sub-blocos com título) — hoje só "Casamentos & eventos".
+  const niches = occasionNiches(occasion.value);
+  const nicheValues = new Set(niches.map((n) => n.value));
+  const nichedGroups = niches
+    .map((niche) => ({
+      niche,
+      products: items.filter((p) => metaByProduct.get(p.id)?.event_niche === niche.value),
+    }))
+    .filter((g) => g.products.length > 0);
+  const ungrouped = niches.length
+    ? items.filter((p) => !nicheValues.has(metaByProduct.get(p.id)?.event_niche ?? ""))
+    : items;
 
   const whatsapp = buildWhatsAppLink(
     settings.whatsapp_number,
@@ -157,17 +205,19 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
       )}
 
       {items.length > 0 && (
-        <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
+        <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-8">
           <h2 className="font-display text-2xl md:text-3xl text-ink">O que a Bubri oferece</h2>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                whatsappNumber={settings.whatsapp_number}
-              />
-            ))}
-          </div>
+
+          {nichedGroups.map(({ niche, products: group }) => (
+            <div key={niche.value} className="flex flex-col gap-4">
+              <h3 className="font-display text-xl md:text-2xl text-accent-ink">{niche.label}</h3>
+              <ProductGrid products={group} whatsappNumber={settings.whatsapp_number} />
+            </div>
+          ))}
+
+          {ungrouped.length > 0 && (
+            <ProductGrid products={ungrouped} whatsappNumber={settings.whatsapp_number} />
+          )}
         </Reveal>
       )}
 

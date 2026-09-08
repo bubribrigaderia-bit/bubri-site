@@ -2,16 +2,29 @@
 
 import { useState } from "react";
 import { OCCASIONS } from "@/types/database";
-import type { CorporateClient, OccasionPhoto, ProductCategory } from "@/types/database";
+import type {
+  CorporateClient,
+  OccasionPhoto,
+  Product,
+  ProductCategory,
+  ProductOccasionMeta,
+} from "@/types/database";
 import { OccasionGalleryManager } from "./OccasionGalleryManager";
+import { OccasionProductsManager } from "./OccasionProductsManager";
 import { CorporateClientsManager } from "./CorporateClientsManager";
 
 export function OcasioesManager({
   photos,
   corporateClients,
+  products,
+  productMeta,
+  productMetaReady,
 }: {
   photos: OccasionPhoto[];
   corporateClients: CorporateClient[];
+  products: Product[];
+  productMeta: ProductOccasionMeta[];
+  productMetaReady: boolean;
 }) {
   const [active, setActive] = useState<ProductCategory>(OCCASIONS[0].value);
 
@@ -37,6 +50,16 @@ export function OcasioesManager({
         slug={active}
         photos={photos.filter((p) => p.occasion_slug === active)}
       />
+
+      <div className="border-t border-line-soft pt-6">
+        <OccasionProductsManager
+          key={active}
+          slug={active}
+          products={products.filter((p) => p.active && p.categories.includes(active))}
+          meta={productMeta.filter((m) => m.occasion_slug === active)}
+          tableMissing={!productMetaReady}
+        />
+      </div>
 
       {active === "corporativo" && (
         <div className="border-t border-line-soft pt-6">

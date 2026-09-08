@@ -77,6 +77,22 @@ create index if not exists idx_products_categories on products using gin (catego
 create index if not exists idx_products_active on products (active);
 
 -- ---------------------------------------------------------------------------
+-- product_occasion_meta (ordem e nicho de cada produto DENTRO de uma ocasião)
+--   `products.categories` define em quais ocasiões o produto aparece;
+--   esta tabela só guarda a ordem de exibição e o nicho, por ocasião.
+--   event_niche: '' | 'mesa_de_doces' | 'lembrancinhas'  (só a ocasião Eventos usa)
+-- ---------------------------------------------------------------------------
+create table if not exists product_occasion_meta (
+  product_id uuid not null references products(id) on delete cascade,
+  occasion_slug text not null check (occasion_slug in
+    ('presentes', 'casamentos_eventos', 'corporativo', 'degustacao')),
+  position int not null default 0,
+  event_niche text not null default '',
+  primary key (product_id, occasion_slug)
+);
+create index if not exists idx_pom_occasion on product_occasion_meta (occasion_slug);
+
+-- ---------------------------------------------------------------------------
 -- faq_items (perguntas frequentes da página de Contato)
 -- ---------------------------------------------------------------------------
 create table if not exists faq_items (
@@ -138,6 +154,7 @@ alter table testimonials enable row level security;
 alter table occasion_photos enable row level security;
 alter table corporate_clients enable row level security;
 alter table page_content enable row level security;
+alter table product_occasion_meta enable row level security;
 
 -- Leitura pública (site institucional não exige login para visitantes)
 create policy "public read settings" on site_settings for select to anon, authenticated using (true);
@@ -155,6 +172,7 @@ create policy "public read active occasion_photos" on occasion_photos for select
 create policy "admin read all occasion_photos" on occasion_photos for select to authenticated using (true);
 create policy "public read active corporate_clients" on corporate_clients for select to anon using (active = true);
 create policy "admin read all corporate_clients" on corporate_clients for select to authenticated using (true);
+create policy "public read product_occasion_meta" on product_occasion_meta for select to anon, authenticated using (true);
 
 -- Escrita: só usuário autenticado (o painel exige login; não há cadastro público de conta)
 create policy "admin write settings" on site_settings for all to authenticated using (true) with check (true);
@@ -165,6 +183,7 @@ create policy "admin write testimonials" on testimonials for all to authenticate
 create policy "admin write occasion_photos" on occasion_photos for all to authenticated using (true) with check (true);
 create policy "admin write corporate_clients" on corporate_clients for all to authenticated using (true) with check (true);
 create policy "admin write page_content" on page_content for all to authenticated using (true) with check (true);
+create policy "admin write product_occasion_meta" on product_occasion_meta for all to authenticated using (true) with check (true);
 
 -- ---------------------------------------------------------------------------
 -- Storage: bucket público para as fotos do site

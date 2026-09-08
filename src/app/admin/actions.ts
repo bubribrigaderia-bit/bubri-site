@@ -143,6 +143,30 @@ export async function deleteOccasionPhoto(id: string): Promise<ActionResult> {
   return { success: true };
 }
 
+const productOccasionMetaSchema = z.object({
+  product_id: z.string().uuid(),
+  occasion_slug: z.enum(OCCASION_SLUGS),
+  position: z.number().int(),
+  event_niche: z.enum(["", "mesa_de_doces", "lembrancinhas"]).default(""),
+});
+
+export async function setProductOccasionMeta(input: unknown): Promise<ActionResult> {
+  const parsed = productOccasionMetaSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0].message };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("product_occasion_meta")
+    .upsert(parsed.data, { onConflict: "product_id,occasion_slug" });
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/[ocasiao]", "page");
+  return { success: true };
+}
+
 const corporateClientSchema = z.object({
   id: z.string().uuid().optional(),
   name: z.string().trim().min(1, "Informe o nome da empresa").max(120),

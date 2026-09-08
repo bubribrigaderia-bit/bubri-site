@@ -30,6 +30,24 @@ export function occasionByPath(path: string): Occasion | undefined {
   return OCCASIONS.find((o) => o.path === path);
 }
 
+/**
+ * Nichos (sub-blocos com título) dentro da página de uma ocasião.
+ * Hoje só "Casamentos & eventos" tem; a página renderiza um bloco por nicho
+ * e um bloco final sem título para os produtos ainda sem nicho definido.
+ */
+export type OccasionNiche = { value: string; label: string };
+
+export const OCCASION_NICHES: Partial<Record<ProductCategory, OccasionNiche[]>> = {
+  casamentos_eventos: [
+    { value: "mesa_de_doces", label: "Mesa de doces" },
+    { value: "lembrancinhas", label: "Lembrancinhas" },
+  ],
+};
+
+export function occasionNiches(value: ProductCategory): OccasionNiche[] {
+  return OCCASION_NICHES[value] ?? [];
+}
+
 export function occasionByValue(value: ProductCategory): Occasion | undefined {
   return OCCASIONS.find((o) => o.value === value);
 }
@@ -94,6 +112,19 @@ export type Product = {
   updated_at: string;
 };
 
+/**
+ * Metadados de um produto dentro de UMA ocasião: ordem de exibição e nicho.
+ * `products.categories` continua sendo a fonte da verdade de "em quais ocasiões
+ * o produto aparece"; esta tabela só guarda ordem/nicho, preenchida pelo painel.
+ */
+export type ProductOccasionMeta = {
+  product_id: string;
+  occasion_slug: ProductCategory;
+  position: number;
+  /** "" quando sem nicho; senão um `OccasionNiche["value"]` da ocasião */
+  event_niche: string;
+};
+
 export type FaqItem = {
   id: string;
   question: string;
@@ -144,6 +175,12 @@ export type Database = {
         Row: FaqItem;
         Insert: Partial<FaqItem>;
         Update: Partial<FaqItem>;
+        Relationships: [];
+      };
+      product_occasion_meta: {
+        Row: ProductOccasionMeta;
+        Insert: Partial<ProductOccasionMeta>;
+        Update: Partial<ProductOccasionMeta>;
         Relationships: [];
       };
       testimonials: {
