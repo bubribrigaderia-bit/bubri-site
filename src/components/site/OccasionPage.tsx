@@ -9,6 +9,7 @@ import {
 import type { Occasion, Product } from "@/types/database";
 import { occasionNiches } from "@/types/database";
 import { ProductCard } from "@/components/site/ProductCard";
+import { ClientLogosCarousel } from "@/components/site/ClientLogosCarousel";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
@@ -192,30 +193,8 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
       )}
 
       {isCorporate && clients.length > 0 && (
-        <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
-          <h2 className="font-display text-2xl md:text-3xl text-ink">Alguns dos nossos clientes</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {clients.map((client) => (
-              <div
-                key={client.id}
-                className="bg-paper-raised rounded-2xl p-5 flex items-center justify-center aspect-[3/2]"
-                title={client.name}
-              >
-                {client.logo_url ? (
-                  <img
-                    src={client.logo_url}
-                    alt={client.name}
-                    loading="lazy"
-                    className="max-h-16 max-w-full object-contain"
-                  />
-                ) : (
-                  <span className="font-display text-sm text-graphite text-center">
-                    {client.name}
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
+        <Reveal className="mx-auto max-w-5xl px-6 w-full">
+          <ClientLogosCarousel clients={clients} />
         </Reveal>
       )}
 
