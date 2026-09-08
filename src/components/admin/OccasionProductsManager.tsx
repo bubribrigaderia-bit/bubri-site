@@ -1,11 +1,101 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  restrictToParentElement,
+  restrictToVerticalAxis,
+} from "@dnd-kit/modifiers";
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { Product, ProductCategory, ProductOccasionMeta } from "@/types/database";
 import { occasionNiches } from "@/types/database";
 import { setProductOccasionMeta } from "@/app/admin/actions";
 import { PhotoOrPlaceholder } from "@/components/site/PhotoOrPlaceholder";
+
+function sortByMeta(products: Product[], meta: ProductOccasionMeta[]): Product[] {
+  const posByProduct = new Map(meta.map((m) => [m.product_id, m.position]));
+  return [...products].sort(
+    (a, b) =>
+      (posByProduct.get(a.id) ?? Number.MAX_SAFE_INTEGER) -
+        (posByProduct.get(b.id) ?? Number.MAX_SAFE_INTEGER) ||
+      a.name.localeCompare(b.name, "pt-BR")
+  );
+}
+
+function SortableRow({
+  product,
+  niches,
+  niche,
+  busy,
+  onNicheChange,
+}: {
+  product: Product;
+  niches: { value: string; label: string }[];
+  niche: string;
+  busy: boolean;
+  onNicheChange: (value: string) => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: product.id });
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      className={`border border-line-soft bg-paper-raised p-2 flex items-center gap-3 ${
+        isDragging ? "opacity-70 shadow-md z-10" : ""
+      }`}
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        disabled={busy}
+        aria-label={`Arrastar ${product.name}`}
+        className="shrink-0 cursor-grab active:cursor-grabbing touch-none px-1.5 py-1 text-graphite text-lg leading-none disabled:opacity-30"
+      >
+        ⠿
+      </button>
+      <PhotoOrPlaceholder
+        src={product.photo_url}
+        alt={product.name}
+        className="h-10 w-10 shrink-0 rounded"
+      />
+      <p className="flex-1 min-w-0 text-sm font-bold truncate">{product.name}</p>
+      {niches.length > 0 && (
+        <select
+          value={niche}
+          disabled={busy}
+          onChange={(e) => onNicheChange(e.target.value)}
+          className="shrink-0 border border-line-soft bg-paper-raised text-xs px-2 py-1"
+        >
+          <option value="">— sem nicho —</option>
+          {niches.map((n) => (
+            <option key={n.value} value={n.value}>
+              {n.label}
+            </option>
+          ))}
+        </select>
+      )}
+    </div>
+  );
+}
 
 export function OccasionProductsManager({
   slug,
@@ -24,14 +114,21 @@ export function OccasionProductsManager({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const metaByProduct = new Map(meta.map((m) => [m.product_id, m]));
   const niches = occasionNiches(slug);
+  const nicheByProduct = useMemo(
+    () => new Map(meta.map((m) => [m.product_id, m.event_niche])),
+    [meta]
+  );
 
-  const ordered = [...products].sort(
-    (a, b) =>
-      (metaByProduct.get(a.id)?.position ?? Number.MAX_SAFE_INTEGER) -
-        (metaByProduct.get(b.id)?.position ?? Number.MAX_SAFE_INTEGER) ||
-      a.name.localeCompare(b.name, "pt-BR")
+  const orderedFromProps = useMemo(() => sortByMeta(products, meta), [products, meta]);
+  const [ordered, setOrdered] = useState<Product[]>(orderedFromProps);
+  useEffect(() => {
+    setOrdered(orderedFromProps);
+  }, [orderedFromProps]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
   async function persistOrder(list: Product[]) {
@@ -43,7 +140,7 @@ export function OccasionProductsManager({
           product_id: p.id,
           occasion_slug: slug,
           position: index,
-          event_niche: metaByProduct.get(p.id)?.event_niche ?? "",
+          event_niche: nicheByProduct.get(p.id) ?? "",
         })
       )
     );
@@ -51,17 +148,21 @@ export function OccasionProductsManager({
     const failed = results.find((r) => !r.success);
     if (failed && !failed.success) {
       setError(failed.error);
+      setOrdered(orderedFromProps); // desfaz o otimismo
       return;
     }
     router.refresh();
   }
 
-  async function move(index: number, dir: -1 | 1) {
-    const target = index + dir;
-    if (target < 0 || target >= ordered.length) return;
-    const next = [...ordered];
-    [next[index], next[target]] = [next[target], next[index]];
-    await persistOrder(next);
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = ordered.findIndex((p) => p.id === active.id);
+    const newIndex = ordered.findIndex((p) => p.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+    const next = arrayMove(ordered, oldIndex, newIndex);
+    setOrdered(next);
+    void persistOrder(next);
   }
 
   async function setNiche(product: Product, value: string) {
@@ -70,9 +171,7 @@ export function OccasionProductsManager({
     const result = await setProductOccasionMeta({
       product_id: product.id,
       occasion_slug: slug,
-      position:
-        metaByProduct.get(product.id)?.position ??
-        ordered.findIndex((p) => p.id === product.id),
+      position: ordered.findIndex((p) => p.id === product.id),
       event_niche: value,
     });
     setBusy(false);
@@ -106,61 +205,41 @@ export function OccasionProductsManager({
           Ordem dos produtos{niches.length ? " e nichos" : ""}
         </p>
         <p className="text-xs text-graphite">
-          Define a ordem em que os produtos aparecem nesta ocasião
-          {niches.length ? ' e em qual bloco ("Mesa de doces" ou "Lembrancinhas") cada um entra' : ""}.
-          Não altera as categorias do produto — isso continua em Produtos.
+          Arraste pelo <span aria-hidden="true">⠿</span> para mudar a ordem em que os produtos
+          aparecem nesta ocasião
+          {niches.length
+            ? ' e escolha em qual bloco ("Mesa de doces" ou "Lembrancinhas") cada um entra'
+            : ""}
+          . Não altera as categorias do produto — isso continua em Produtos.
         </p>
       </div>
 
       {error && <p className="text-sm text-red-700">{error}</p>}
 
-      <div className="flex flex-col gap-2">
-        {ordered.map((product, i) => (
-          <div key={product.id} className="border border-line-soft p-2 flex items-center gap-3">
-            <div className="flex gap-1 shrink-0">
-              <button
-                type="button"
-                disabled={busy || i === 0}
-                onClick={() => move(i, -1)}
-                className="px-1.5 border border-line-soft rounded disabled:opacity-30"
-                aria-label="Mover para cima"
-              >
-                ↑
-              </button>
-              <button
-                type="button"
-                disabled={busy || i === ordered.length - 1}
-                onClick={() => move(i, 1)}
-                className="px-1.5 border border-line-soft rounded disabled:opacity-30"
-                aria-label="Mover para baixo"
-              >
-                ↓
-              </button>
-            </div>
-            <PhotoOrPlaceholder
-              src={product.photo_url}
-              alt={product.name}
-              className="h-10 w-10 shrink-0 rounded"
-            />
-            <p className="flex-1 min-w-0 text-sm font-bold truncate">{product.name}</p>
-            {niches.length > 0 && (
-              <select
-                value={metaByProduct.get(product.id)?.event_niche ?? ""}
-                disabled={busy}
-                onChange={(e) => setNiche(product, e.target.value)}
-                className="shrink-0 border border-line-soft bg-paper-raised text-xs px-2 py-1"
-              >
-                <option value="">— sem nicho —</option>
-                {niches.map((n) => (
-                  <option key={n.value} value={n.value}>
-                    {n.label}
-                  </option>
-                ))}
-              </select>
-            )}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={ordered.map((p) => p.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="flex flex-col gap-2">
+            {ordered.map((product) => (
+              <SortableRow
+                key={product.id}
+                product={product}
+                niches={niches}
+                niche={nicheByProduct.get(product.id) ?? ""}
+                busy={busy}
+                onNicheChange={(value) => setNiche(product, value)}
+              />
+            ))}
           </div>
-        ))}
-      </div>
+        </SortableContext>
+      </DndContext>
     </div>
   );
 }
