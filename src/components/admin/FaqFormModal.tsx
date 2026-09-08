@@ -6,10 +6,13 @@ import { upsertFaqItem } from "@/app/admin/actions";
 
 export function FaqFormModal({
   initialItem,
+  nextOrder,
   onClose,
   onSaved,
 }: {
   initialItem: FaqItem | null;
+  /** display_order aplicado a uma pergunta nova (vai para o fim da lista). */
+  nextOrder: number;
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -29,7 +32,7 @@ export function FaqFormModal({
       question,
       answer,
       active,
-      display_order: initialItem?.display_order ?? 0,
+      display_order: initialItem?.display_order ?? nextOrder,
     });
 
     setSaving(false);

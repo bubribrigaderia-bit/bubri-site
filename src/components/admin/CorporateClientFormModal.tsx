@@ -49,7 +49,7 @@ export function CorporateClientFormModal({
         className="bg-paper w-full max-w-md p-6 flex flex-col gap-4 max-h-[90vh] overflow-y-auto"
       >
         <h2 className="font-bold text-lg">
-          {initialItem ? "Editar empresa" : "Nova empresa"}
+          {initialItem ? "Editar cliente" : "Novo cliente"}
         </h2>
 
         <label className="flex flex-col gap-1 text-sm">
@@ -63,13 +63,14 @@ export function CorporateClientFormModal({
         </label>
 
         <ImageUploadField
-          label="Logo (de preferência PNG com fundo transparente)"
+          label="Logo — PNG com fundo transparente, ~600 × 400 px (paisagem). Logo quadrado? use ~400 × 400 px. O site reduz e centraliza sozinho."
           value={logoUrl}
           onChange={(url) => setLogoUrl(url || null)}
           aspectOptions={[
+            { label: "Paisagem (3:2)", value: 3 / 2 },
             { label: "Quadrada", value: 1 },
-            { label: "Horizontal", value: 16 / 9 },
           ]}
+          exportMaxWidth={800}
         />
 
         <label className="flex flex-col gap-1 text-sm">
