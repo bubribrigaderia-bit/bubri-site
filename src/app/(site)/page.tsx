@@ -22,11 +22,34 @@ export default async function HomePage() {
   );
 
   const heroPhoto = content.foto_hero_url || null;
+  // Vídeo de destaque da Home (Opção A — arquivo fixo em /public).
+  // Para voltar à foto, basta apagar este vídeo e o site usa `heroPhoto`.
+  const heroVideo = "/hero-bubri.mp4";
+  const heroHasMedia = Boolean(heroVideo || heroPhoto);
 
   return (
     <div className="flex flex-col gap-20 pb-16">
       <section className="relative isolate overflow-hidden flex items-center min-h-[54vh] md:min-h-[62vh]">
-        {heroPhoto ? (
+        {heroVideo ? (
+          <>
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster={heroPhoto ?? "/hero-bubri-poster.jpg"}
+              aria-hidden="true"
+              className="absolute inset-0 -z-20 h-full w-full object-cover"
+            >
+              <source src={heroVideo} type="video/mp4" />
+            </video>
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 -z-10 bg-gradient-to-r from-black/75 via-black/55 to-black/20 md:to-transparent"
+            />
+          </>
+        ) : heroPhoto ? (
           <>
             <img
               src={heroPhoto}
@@ -66,7 +89,7 @@ export default async function HomePage() {
           <div className="flex flex-col gap-4 max-w-xl">
             <span
               className={`animate-fade-up text-xs font-semibold tracking-[0.2em] uppercase ${
-                heroPhoto ? "text-white/80" : "text-accent-ink"
+                heroHasMedia ? "text-white/80" : "text-accent-ink"
               }`}
               style={{ animationDelay: "0ms" }}
             >
@@ -74,7 +97,7 @@ export default async function HomePage() {
             </span>
             <h1
               className={`animate-fade-up font-display text-4xl md:text-5xl leading-[1.1] text-balance ${
-                heroPhoto ? "text-white" : "text-ink"
+                heroHasMedia ? "text-white" : "text-ink"
               }`}
               style={{ animationDelay: "80ms" }}
             >
@@ -82,7 +105,7 @@ export default async function HomePage() {
             </h1>
             <p
               className={`animate-fade-up max-w-prose ${
-                heroPhoto ? "text-white/90" : "text-graphite"
+                heroHasMedia ? "text-white/90" : "text-graphite"
               }`}
               style={{ animationDelay: "160ms" }}
             >
