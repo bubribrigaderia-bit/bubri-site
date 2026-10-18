@@ -3,7 +3,12 @@ import { getActiveProducts, groupProductsByCategory } from "@/lib/data/products"
 import { getSiteSettings } from "@/lib/data/settings";
 import { CardapioTabs } from "@/components/site/CardapioTabs";
 
-export const metadata: Metadata = { title: "Cardápio" };
+export const metadata: Metadata = {
+  title: "Cardápio",
+  description:
+    "Catálogo completo da Bubri Confeitaria: doces finos, pão de mel, cookies, brownies, kits e cestas para presente e brindes corporativos em São Paulo.",
+  alternates: { canonical: "/cardapio" },
+};
 
 export default async function CardapioPage() {
   const [products, settings] = await Promise.all([getActiveProducts(), getSiteSettings()]);

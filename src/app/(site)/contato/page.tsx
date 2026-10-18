@@ -3,8 +3,15 @@ import { getSiteSettings } from "@/lib/data/settings";
 import { getActiveFaqItems } from "@/lib/data/faq";
 import { FaqAccordion } from "@/components/site/FaqAccordion";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { JsonLd } from "@/components/site/JsonLd";
+import { faqJsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "FAQ" };
+export const metadata: Metadata = {
+  title: "Perguntas frequentes, entrega e contato",
+  description:
+    "Prazos, entrega em São Paulo, envio para outros estados, pedidos corporativos com nota fiscal e formas de pagamento da Bubri Confeitaria.",
+  alternates: { canonical: "/contato" },
+};
 
 const SOBRE_BUBRI = [
   "Somos uma confeitaria 100% artesanal.",
@@ -31,6 +38,7 @@ export default async function ContatoPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12 flex flex-col gap-8">
+      {faqItems.length > 0 && <JsonLd data={faqJsonLd(faqItems)} />}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="bg-paper-raised rounded-2xl border-2 border-gold p-5 flex flex-col gap-3">
           <p className="self-start font-display text-lg text-white bg-gold rounded-full px-4 py-1">

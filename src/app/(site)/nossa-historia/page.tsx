@@ -5,7 +5,12 @@ import { PhotoOrPlaceholder } from "@/components/site/PhotoOrPlaceholder";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
-export const metadata: Metadata = { title: "Nossa História" };
+export const metadata: Metadata = {
+  title: "Nossa História",
+  description:
+    "Conheça a história da Bubri, confeitaria 100% artesanal de São Paulo especializada em doces finos para presentes, casamentos e empresas.",
+  alternates: { canonical: "/nossa-historia" },
+};
 
 export default async function NossaHistoriaPage() {
   const [content, settings] = await Promise.all([

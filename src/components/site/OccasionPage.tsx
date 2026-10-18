@@ -12,6 +12,8 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { ClientLogosCarousel } from "@/components/site/ClientLogosCarousel";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { JsonLd } from "@/components/site/JsonLd";
+import { catalogJsonLd } from "@/lib/seo";
 
 function ProductGrid({
   products,
@@ -82,6 +84,7 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
 
   return (
     <div className="flex flex-col gap-16 pb-16">
+      <JsonLd data={catalogJsonLd(title, occasion.path, items)} />
       <section className="relative isolate overflow-hidden flex items-center min-h-[46vh] md:min-h-[54vh]">
         {heroPhoto ? (
           <>
