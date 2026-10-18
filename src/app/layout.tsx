@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     "presente com doces",
   ],
   alternates: { canonical: "/" },
+  verification: { google: "dP77ozqi8mflebMaNdMvhdyaE1D-C8BFTIxikm1GLOQ" },
   openGraph: {
     type: "website",
     locale: "pt_BR",
