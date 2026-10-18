@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -20,17 +21,23 @@ const fraunces = Fraunces({
   weight: ["500", "600", "700", "900"],
 });
 
-const SITE_URL = "https://www.bubriconfeitaria.com";
-const SITE_DESCRIPTION =
-  "Confeitaria 100% artesanal. Doces finos para presentear, casamentos, eventos e brindes corporativos.";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Bubri Confeitaria",
-    template: "%s | Bubri Confeitaria",
+    default: `${SITE_NAME} | Doces finos e brindes corporativos em São Paulo`,
+    template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
+  keywords: [
+    "doces finos",
+    "brindes corporativos",
+    "kit corporativo personalizado",
+    "doces para casamento",
+    "confeitaria artesanal São Paulo",
+    "brigadeiro gourmet",
+    "presente com doces",
+  ],
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "pt_BR",

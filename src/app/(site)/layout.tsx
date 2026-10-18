@@ -3,6 +3,8 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { WhatsAppFloatingButton } from "@/components/site/WhatsAppFloatingButton";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { JsonLd } from "@/components/site/JsonLd";
+import { bakeryJsonLd } from "@/lib/seo";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSiteSettings();
@@ -13,6 +15,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <>
+      <JsonLd data={bakeryJsonLd(settings)} />
       <Nav whatsappHref={whatsappHref} />
       <main className="flex-1">{children}</main>
       <Footer

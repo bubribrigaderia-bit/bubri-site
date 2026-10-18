@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { OCCASIONS, occasionByPath } from "@/types/database";
 import { getPillars } from "@/lib/data/pillars";
 import { OccasionPage } from "@/components/site/OccasionPage";
+import { OCCASION_DESCRIPTIONS } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -21,7 +22,11 @@ export async function generateMetadata({
 
   const pillars = await getPillars();
   const pillar = pillars.find((p) => p.slug === occasion.value);
-  return { title: pillar?.title ?? occasion.menuLabel };
+  return {
+    title: `${pillar?.title ?? occasion.menuLabel} em São Paulo`,
+    description: OCCASION_DESCRIPTIONS[occasion.path] ?? pillar?.description,
+    alternates: { canonical: `/${occasion.path}` },
+  };
 }
 
 export default async function OcasiaoRoute({
