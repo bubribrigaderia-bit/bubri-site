@@ -79,6 +79,16 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               </div>
             </div>
 
+            <Link
+              href="/natal-corporativo"
+              className={`font-display text-lg px-5 py-2 rounded-full border-2 border-wine transition-colors ${
+                pathname === "/natal-corporativo"
+                  ? "bg-wine text-white"
+                  : "text-wine hover:bg-wine hover:text-white dark:text-[#f3dfb4]"
+              }`}
+            >
+              Natal Corporativo
+            </Link>
             <Link href="/nossa-historia" className={linkClass(pathname === "/nossa-historia")}>
               Nossa História
             </Link>
@@ -137,9 +147,16 @@ export function Nav({ whatsappHref }: { whatsappHref: string }) {
               </Link>
             ))}
             <Link
+              href="/natal-corporativo"
+              onClick={() => setOpen(false)}
+              className="py-2.5 mt-1 font-display text-lg text-wine dark:text-[#f3dfb4]"
+            >
+              ✦ Natal Corporativo
+            </Link>
+            <Link
               href="/nossa-historia"
               onClick={() => setOpen(false)}
-              className="py-2.5 mt-1 font-display text-lg text-ink"
+              className="py-2.5 font-display text-lg text-ink"
             >
               Nossa História
             </Link>

@@ -1,4 +1,5 @@
 import type { FaqItem, Product, SiteSettings } from "@/types/database";
+import { NATAL_PRODUCTS, NATAL_YEAR } from "@/lib/data/natal";
 
 // Fonte única da URL pública e dos textos de busca. Usados pelos metadados,
 // sitemap/robots, llms.txt e pelos dados estruturados (JSON-LD) que buscadores
@@ -106,5 +107,33 @@ export function catalogJsonLd(name: string, path: string, products: Product[]) {
         brand: { "@type": "Brand", name: SITE_NAME },
       },
     })),
+  };
+}
+
+export const NATAL_DESCRIPTION =
+  "Natal corporativo em São Paulo: chocotone, bombons, caixas e kits de Natal artesanais personalizados com a marca da sua empresa, para equipes, clientes e parceiros. Nota fiscal e envio para todo o Brasil.";
+
+export function natalCatalogJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    name: `Natal Corporativo ${NATAL_YEAR} — Bubri Confeitaria`,
+    url: `${SITE_URL}/natal-corporativo`,
+    seller: { "@id": `${SITE_URL}/#bubri` },
+    itemListElement: NATAL_PRODUCTS.flatMap((p) =>
+      p.variants.map((v) => ({
+        "@type": "Offer",
+        price: v.price,
+        priceCurrency: "BRL",
+        seller: { "@id": `${SITE_URL}/#bubri` },
+        itemOffered: {
+          "@type": "Product",
+          name: v.label,
+          description: p.description,
+          image: `${SITE_URL}${p.photo}`,
+          brand: { "@type": "Brand", name: SITE_NAME },
+        },
+      }))
+    ),
   };
 }

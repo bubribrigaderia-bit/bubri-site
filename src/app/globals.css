@@ -40,6 +40,9 @@
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
   --color-gold: var(--gold);
+  /* bordô do catálogo de Natal (igual no claro e no escuro) */
+  --color-wine: #6b0a24;
+  --color-wine-deep: #4f0619;
   --font-sans: var(--font-raleway);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-fraunces);

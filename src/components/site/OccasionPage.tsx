@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getSiteSettings } from "@/lib/data/settings";
 import { getPillars } from "@/lib/data/pillars";
 import { getActiveProducts } from "@/lib/data/products";
@@ -148,6 +149,27 @@ export async function OccasionPage({ occasion }: { occasion: Occasion }) {
           />
         </svg>
       </section>
+
+      {isCorporate && (
+        <Reveal className="mx-auto max-w-5xl px-6 w-full">
+          <Link
+            href="/natal-corporativo"
+            className="group flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl bg-wine p-6 text-white shadow-lg hover:bg-wine-deep transition-colors"
+          >
+            <span className="flex flex-col gap-1">
+              <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#e2c892]">
+                Coleção de Natal
+              </span>
+              <span className="font-display text-2xl text-[#f3dfb4]">
+                Natal Corporativo: presentes personalizados para a sua empresa
+              </span>
+            </span>
+            <span className="shrink-0 font-semibold text-[#e2c892] group-hover:translate-x-1 transition-transform">
+              Ver coleção e montar pedido →
+            </span>
+          </Link>
+        </Reveal>
+      )}
 
       {intro && (
         <Reveal className="mx-auto max-w-3xl px-6 w-full">
