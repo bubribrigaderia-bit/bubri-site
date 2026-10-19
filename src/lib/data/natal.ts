@@ -26,6 +26,11 @@ export const NATAL_YEAR = 2026;
 export const NATAL_PERSONALIZATION_DEADLINE = "10/11";
 export const NATAL_SPECIAL_CONDITION_QTY = 20;
 
+// Foto do topo da página. As fotos (capa e produtos) podem ser trocadas no
+// /admin → Natal; o que está aqui é a foto original, usada quando não há troca.
+export const NATAL_COVER_ID = "capa";
+export const NATAL_COVER_PHOTO = "/natal/capa.jpg";
+
 export const NATAL_GROUPS: { value: NatalProduct["group"]; title: string; subtitle: string }[] = [
   {
     value: "especiais",

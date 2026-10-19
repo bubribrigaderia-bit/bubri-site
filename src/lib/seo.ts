@@ -113,7 +113,7 @@ export function catalogJsonLd(name: string, path: string, products: Product[]) {
 export const NATAL_DESCRIPTION =
   "Presentes de Natal corporativos com a logo da sua empresa: chocotone, bombons e kits artesanais para clientes e equipes. Nota fiscal e entrega em SP e Brasil.";
 
-export function natalCatalogJsonLd() {
+export function natalCatalogJsonLd(photos: Record<string, string> = {}) {
   return {
     "@context": "https://schema.org",
     "@type": "OfferCatalog",
@@ -130,7 +130,7 @@ export function natalCatalogJsonLd() {
           "@type": "Product",
           name: v.label,
           description: p.description,
-          image: `${SITE_URL}${p.photo}`,
+          image: photos[p.id] ?? `${SITE_URL}${p.photo}`,
           brand: { "@type": "Brand", name: SITE_NAME },
         },
       }))

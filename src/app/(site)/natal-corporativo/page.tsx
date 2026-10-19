@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/data/settings";
 import { getCorporateClients } from "@/lib/data/occasions";
+import { getNatalPhotos } from "@/lib/data/natalPhotos";
 import {
+  NATAL_COVER_ID,
+  NATAL_COVER_PHOTO,
   NATAL_DELIVERY_TEXT,
   NATAL_PAYMENT_TEXT,
   NATAL_PERSONALIZATION_DEADLINE,
@@ -32,7 +35,11 @@ const WAVE_PATH =
   "M0,64 C220,20 400,20 720,56 C1000,88 1200,92 1440,48 L1440,100 L0,100 Z";
 
 export default async function NatalCorporativoPage() {
-  const [settings, clients] = await Promise.all([getSiteSettings(), getCorporateClients()]);
+  const [settings, clients, photos] = await Promise.all([
+    getSiteSettings(),
+    getCorporateClients(),
+    getNatalPhotos(),
+  ]);
 
   const whatsapp = buildWhatsAppLink(
     settings.whatsapp_number,
@@ -41,7 +48,7 @@ export default async function NatalCorporativoPage() {
 
   return (
     <div className="flex flex-col gap-16 pb-24">
-      <JsonLd data={natalCatalogJsonLd()} />
+      <JsonLd data={natalCatalogJsonLd(photos)} />
 
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-wine text-white">
@@ -80,7 +87,7 @@ export default async function NatalCorporativoPage() {
             </p>
           </div>
           <img
-            src="/natal/capa.jpg"
+            src={photos[NATAL_COVER_ID] ?? NATAL_COVER_PHOTO}
             alt="Kits de Natal da Bubri personalizados para empresas"
             fetchPriority="high"
             className="w-full max-w-sm md:max-w-none justify-self-center rounded-[2rem] shadow-2xl aspect-[5/6] object-cover border-4 border-[#c9a86a]/60"
@@ -123,7 +130,7 @@ export default async function NatalCorporativoPage() {
       </Reveal>
 
       {/* Coleção + montador de pedido */}
-      <NatalCatalog whatsappNumber={settings.whatsapp_number} />
+      <NatalCatalog whatsappNumber={settings.whatsapp_number} photos={photos} />
 
       {/* Por que a Bubri */}
       <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">

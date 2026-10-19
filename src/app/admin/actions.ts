@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { NATAL_COVER_ID, NATAL_PRODUCTS } from "@/lib/data/natal";
 
 const CATEGORY_VALUES = ["presentes", "casamentos_eventos", "corporativo", "degustacao"] as const;
 
@@ -349,6 +350,36 @@ export async function updateSiteSettings(input: unknown): Promise<ActionResult> 
 
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+
+const NATAL_PHOTO_IDS = [NATAL_COVER_ID, ...NATAL_PRODUCTS.map((p) => p.id)];
+
+const natalPhotoSchema = z.object({
+  product_id: z.string().refine((id) => NATAL_PHOTO_IDS.includes(id), "Produto de Natal inválido"),
+  // "" = voltar para a foto original do catálogo
+  photo_url: z.union([z.literal(""), z.string().url()]),
+});
+
+export async function setNatalPhoto(input: unknown): Promise<ActionResult> {
+  const parsed = natalPhotoSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0].message };
+  }
+
+  const supabase = await createClient();
+  const { product_id, photo_url } = parsed.data;
+
+  const { error } = photo_url
+    ? await supabase
+        .from("natal_photos")
+        .upsert({ product_id, photo_url, updated_at: new Date().toISOString() })
+    : await supabase.from("natal_photos").delete().eq("product_id", product_id);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/natal-corporativo");
+  return { success: true };
+}
+
 
 export async function uploadImage(formData: FormData): Promise<
   { success: true; url: string } | { success: false; error: string }
