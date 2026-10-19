@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/data/settings";
 import { getCorporateClients } from "@/lib/data/occasions";
-import { getNatalPhotos } from "@/lib/data/natalPhotos";
+import { getNatalGallery, getNatalPhotos } from "@/lib/data/natalPhotos";
 import {
   NATAL_COVER_ID,
   NATAL_COVER_PHOTO,
@@ -35,11 +35,15 @@ const WAVE_PATH =
   "M0,64 C220,20 400,20 720,56 C1000,88 1200,92 1440,48 L1440,100 L0,100 Z";
 
 export default async function NatalCorporativoPage() {
-  const [settings, clients, photos] = await Promise.all([
+  const [settings, clients, photos, galleryItems] = await Promise.all([
     getSiteSettings(),
     getCorporateClients(),
     getNatalPhotos(),
+    getNatalGallery(),
   ]);
+  const gallery = Object.fromEntries(
+    Object.entries(galleryItems).map(([id, items]) => [id, items.map((item) => item.photo_url)])
+  );
 
   const whatsapp = buildWhatsAppLink(
     settings.whatsapp_number,
@@ -130,7 +134,7 @@ export default async function NatalCorporativoPage() {
       </Reveal>
 
       {/* Coleção + montador de pedido */}
-      <NatalCatalog whatsappNumber={settings.whatsapp_number} photos={photos} />
+      <NatalCatalog whatsappNumber={settings.whatsapp_number} photos={photos} gallery={gallery} />
 
       {/* Por que a Bubri */}
       <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   NATAL_GROUPS,
   NATAL_PRODUCTS,
@@ -37,13 +37,97 @@ function formatDate(iso: string) {
   return y && m && d ? `${d}/${m}/${y}` : iso;
 }
 
+/**
+ * Fotos do produto lado a lado: no celular a pessoa arrasta (scroll-snap
+ * nativo); no computador aparecem setas ao passar o mouse.
+ */
+function PhotoCarousel({ photos, alt }: { photos: string[]; alt: string }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+
+  function goTo(i: number) {
+    const track = trackRef.current;
+    if (!track) return;
+    const next = (i + photos.length) % photos.length;
+    track.scrollTo({ left: next * track.clientWidth, behavior: "smooth" });
+  }
+
+  function handleScroll() {
+    const track = trackRef.current;
+    if (!track) return;
+    setIndex(Math.round(track.scrollLeft / track.clientWidth));
+  }
+
+  if (photos.length === 1) {
+    return (
+      <img
+        src={photos[0]}
+        alt={alt}
+        loading="lazy"
+        className="aspect-[4/5] w-full object-cover bg-wine"
+      />
+    );
+  }
+
+  return (
+    <div className="group/carousel relative">
+      <div
+        ref={trackRef}
+        onScroll={handleScroll}
+        className="flex snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {photos.map((src, i) => (
+          <img
+            key={`${i}-${src}`}
+            src={src}
+            alt={`${alt} — foto ${i + 1} de ${photos.length}`}
+            loading="lazy"
+            className="aspect-[4/5] w-full shrink-0 snap-center object-cover bg-wine"
+          />
+        ))}
+      </div>
+
+      <button
+        type="button"
+        aria-label="Foto anterior"
+        onClick={() => goTo(index - 1)}
+        className="absolute left-2 top-1/2 -translate-y-1/2 hidden md:flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-[#3c2815] shadow opacity-0 group-hover/carousel:opacity-100 transition-opacity"
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        aria-label="Próxima foto"
+        onClick={() => goTo(index + 1)}
+        className="absolute right-2 top-1/2 -translate-y-1/2 hidden md:flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-[#3c2815] shadow opacity-0 group-hover/carousel:opacity-100 transition-opacity"
+      >
+        ›
+      </button>
+
+      <div className="absolute left-3 bottom-4 flex gap-1.5 rounded-full bg-black/35 px-2 py-1.5">
+        {photos.map((src, i) => (
+          <button
+            key={`${i}-${src}`}
+            type="button"
+            aria-label={`Ver foto ${i + 1}`}
+            onClick={() => goTo(i)}
+            className={`h-2 rounded-full shadow transition-all ${
+              i === index ? "w-5 bg-white" : "w-2 bg-white/60"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ProductCard({
   product,
-  photo,
+  photos,
   onAdd,
 }: {
   product: NatalProduct;
-  photo: string;
+  photos: string[];
   onAdd: (line: Omit<OrderLine, "key">) => void;
 }) {
   const [variantIndex, setVariantIndex] = useState(0);
@@ -70,12 +154,7 @@ function ProductCard({
   return (
     <article className="bg-paper-raised rounded-2xl flex h-full flex-col overflow-hidden border border-line-soft">
       <div className="relative">
-        <img
-          src={photo}
-          alt={product.name}
-          loading="lazy"
-          className="aspect-[4/5] w-full object-cover bg-wine"
-        />
+        <PhotoCarousel photos={photos} alt={product.name} />
         {product.badge && (
           <span className="absolute left-3 top-3 rounded-full bg-wine px-3 py-1 text-xs font-semibold text-[#f3dfb4] shadow">
             {product.badge}
@@ -187,10 +266,13 @@ function ProductCard({
 export function NatalCatalog({
   whatsappNumber,
   photos,
+  gallery,
 }: {
   whatsappNumber: string;
   /** Fotos trocadas no /admin, por id de produto. */
   photos: Record<string, string>;
+  /** Fotos extras do carrossel, por id de produto. */
+  gallery: Record<string, string[]>;
 }) {
   const [lines, setLines] = useState<OrderLine[]>([]);
   const [company, setCompany] = useState("");
@@ -274,7 +356,7 @@ export function NatalCatalog({
                 <ProductCard
                   key={product.id}
                   product={product}
-                  photo={photos[product.id] ?? product.photo}
+                  photos={[photos[product.id] ?? product.photo, ...(gallery[product.id] ?? [])]}
                   onAdd={addLine}
                 />
               ))}

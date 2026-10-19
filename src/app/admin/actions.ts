@@ -380,6 +380,72 @@ export async function setNatalPhoto(input: unknown): Promise<ActionResult> {
   return { success: true };
 }
 
+const NATAL_PRODUCT_IDS = NATAL_PRODUCTS.map((p) => p.id);
+
+const natalGalleryAddSchema = z.object({
+  product_id: z.string().refine((id) => NATAL_PRODUCT_IDS.includes(id), "Produto de Natal inválido"),
+  photo_url: z.string().url("Envie uma foto"),
+});
+
+export async function addNatalGalleryPhoto(input: unknown): Promise<ActionResult> {
+  const parsed = natalGalleryAddSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, error: parsed.error.issues[0].message };
+  }
+
+  const supabase = await createClient();
+  const { data: last } = await supabase
+    .from("natal_gallery")
+    .select("display_order")
+    .eq("product_id", parsed.data.product_id)
+    .order("display_order", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const { error } = await supabase
+    .from("natal_gallery")
+    .insert({ ...parsed.data, display_order: (last?.display_order ?? -1) + 1 });
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/natal-corporativo");
+  return { success: true };
+}
+
+export async function deleteNatalGalleryPhoto(id: string): Promise<ActionResult> {
+  if (!z.string().uuid().safeParse(id).success) {
+    return { success: false, error: "ID de foto inválido" };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("natal_gallery").delete().eq("id", id);
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath("/natal-corporativo");
+  return { success: true };
+}
+
+/** Recebe os ids das fotos extras de um produto na nova ordem. */
+export async function reorderNatalGallery(ids: unknown): Promise<ActionResult> {
+  const parsed = z.array(z.string().uuid()).min(1).safeParse(ids);
+  if (!parsed.success) {
+    return { success: false, error: "Ordem de fotos inválida" };
+  }
+
+  const supabase = await createClient();
+  for (const [index, id] of parsed.data.entries()) {
+    const { error } = await supabase
+      .from("natal_gallery")
+      .update({ display_order: index })
+      .eq("id", id);
+    if (error) return { success: false, error: error.message };
+  }
+
+  revalidatePath("/natal-corporativo");
+  return { success: true };
+}
+
 
 export async function uploadImage(formData: FormData): Promise<
   { success: true; url: string } | { success: false; error: string }

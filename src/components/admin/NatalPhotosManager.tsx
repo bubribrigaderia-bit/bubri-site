@@ -8,7 +8,13 @@ import {
   NATAL_GROUPS,
   NATAL_PRODUCTS,
 } from "@/lib/data/natal";
-import { setNatalPhoto } from "@/app/admin/actions";
+import {
+  addNatalGalleryPhoto,
+  deleteNatalGalleryPhoto,
+  reorderNatalGallery,
+  setNatalPhoto,
+} from "@/app/admin/actions";
+import type { NatalGalleryItem } from "@/lib/data/natalPhotos";
 import { ImageUploadField } from "./ImageUploadField";
 
 const PRODUCT_ASPECTS = [
@@ -19,18 +25,104 @@ const COVER_ASPECTS = [{ label: "Vertical", value: 5 / 6 }];
 
 type Status = { saving?: boolean; error?: string; saved?: boolean };
 
+/** Fotos extras do carrossel de um produto: adicionar, remover e mudar a ordem. */
+function GalleryEditor({ productId, items }: { productId: string; items: NatalGalleryItem[] }) {
+  const router = useRouter();
+  const [status, setStatus] = useState<Status>({});
+
+  async function run(action: () => Promise<{ success: boolean; error?: string }>) {
+    setStatus({ saving: true });
+    const result = await action();
+    if (!result.success) {
+      setStatus({ error: result.error ?? "Não foi possível salvar" });
+      return;
+    }
+    setStatus({ saved: true });
+    router.refresh();
+  }
+
+  function move(index: number, delta: number) {
+    const ids = items.map((item) => item.id);
+    const target = index + delta;
+    if (target < 0 || target >= ids.length) return;
+    [ids[index], ids[target]] = [ids[target], ids[index]];
+    run(() => reorderNatalGallery(ids));
+  }
+
+  return (
+    <div className="flex flex-col gap-2 border-t border-line-soft pt-2">
+      <span className="text-sm font-medium">
+        Fotos extras <span className="text-xs text-graphite font-normal">(o cliente passa para o lado)</span>
+      </span>
+
+      {items.length > 0 && (
+        <ul className="grid grid-cols-3 gap-2">
+          {items.map((item, i) => (
+            <li key={item.id} className="flex flex-col gap-1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={item.photo_url} alt={`Foto extra ${i + 1}`} className="aspect-[4/5] w-full object-cover" />
+              <div className="flex items-center justify-between text-xs">
+                <button
+                  type="button"
+                  onClick={() => move(i, -1)}
+                  disabled={i === 0 || status.saving}
+                  aria-label="Mover para a esquerda"
+                  className="px-1 disabled:opacity-30"
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  onClick={() => run(() => deleteNatalGalleryPhoto(item.id))}
+                  disabled={status.saving}
+                  className="text-graphite underline disabled:opacity-50"
+                >
+                  Remover
+                </button>
+                <button
+                  type="button"
+                  onClick={() => move(i, 1)}
+                  disabled={i === items.length - 1 || status.saving}
+                  aria-label="Mover para a direita"
+                  className="px-1 disabled:opacity-30"
+                >
+                  →
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <ImageUploadField
+        key={items.length}
+        label="Adicionar foto extra"
+        value={null}
+        onChange={(url) => url && run(() => addNatalGalleryPhoto({ product_id: productId, photo_url: url }))}
+        aspectOptions={PRODUCT_ASPECTS}
+      />
+      {status.saving && <span className="text-xs text-graphite">Salvando...</span>}
+      {status.error && <span className="text-xs text-red-700">{status.error}</span>}
+      {status.saved && <span className="text-xs text-accent-ink">Salvo — já está no site</span>}
+    </div>
+  );
+}
+
 function PhotoSlot({
   id,
   label,
   original,
   current,
   aspectOptions,
+  gallery,
 }: {
   id: string;
   label: string;
   original: string;
   current: string | undefined;
   aspectOptions: { label: string; value: number }[];
+  /** Só produtos têm fotos extras; a capa não. */
+  gallery?: NatalGalleryItem[];
 }) {
   const router = useRouter();
   const [status, setStatus] = useState<Status>({});
@@ -60,11 +152,18 @@ function PhotoSlot({
       {status.saving && <span className="text-xs text-graphite">Salvando...</span>}
       {status.error && <span className="text-xs text-red-700">{status.error}</span>}
       {status.saved && <span className="text-xs text-accent-ink">Salvo — já está no site</span>}
+      {gallery && <GalleryEditor productId={id} items={gallery} />}
     </div>
   );
 }
 
-export function NatalPhotosManager({ photos }: { photos: Record<string, string> }) {
+export function NatalPhotosManager({
+  photos,
+  gallery,
+}: {
+  photos: Record<string, string>;
+  gallery: Record<string, NatalGalleryItem[]>;
+}) {
   return (
     <div className="flex flex-col gap-8">
       <section className="flex flex-col gap-3">
@@ -92,6 +191,7 @@ export function NatalPhotosManager({ photos }: { photos: Record<string, string> 
                 original={product.photo}
                 current={photos[product.id]}
                 aspectOptions={PRODUCT_ASPECTS}
+                gallery={gallery[product.id] ?? []}
               />
             ))}
           </div>
