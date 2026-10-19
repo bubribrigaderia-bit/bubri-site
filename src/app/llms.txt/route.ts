@@ -3,7 +3,14 @@ import { getActiveProducts } from "@/lib/data/products";
 import { getActiveFaqItems } from "@/lib/data/faq";
 import { getSiteSettings } from "@/lib/data/settings";
 import { formatPhoneForDisplay } from "@/lib/whatsapp";
-import { OCCASION_DESCRIPTIONS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { NATAL_DESCRIPTION, OCCASION_DESCRIPTIONS, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
+import {
+  NATAL_PERSONALIZATION_DEADLINE,
+  NATAL_PRODUCTS,
+  NATAL_SPECIAL_CONDITION_QTY,
+  NATAL_YEAR,
+  formatBRL,
+} from "@/lib/data/natal";
 
 // Resumo em texto puro da Bubri para assistentes de IA (padrão llms.txt).
 // Gerado do banco, então acompanha o que a Bi edita no /admin.
@@ -40,6 +47,22 @@ export async function GET() {
       const desc = p.description.replace(/\s+/g, " ").trim();
       lines.push(`- **${p.name}** (${p.price_label}): ${desc}`);
     }
+  }
+
+  lines.push(
+    "",
+    `## Natal Corporativo ${NATAL_YEAR}`,
+    "",
+    `> ${NATAL_DESCRIPTION}`,
+    "",
+    `- Página: ${SITE_URL}/natal-corporativo`,
+    `- Prazo para pedidos personalizados: até ${NATAL_PERSONALIZATION_DEADLINE}/${NATAL_YEAR}`,
+    `- Condição especial a partir de ${NATAL_SPECIAL_CONDITION_QTY} unidades`,
+    ""
+  );
+  for (const p of NATAL_PRODUCTS) {
+    const prices = p.variants.map((v) => `${v.label}: ${formatBRL(v.price)}`).join("; ");
+    lines.push(`- **${p.name}** (${prices}): ${p.description}`);
   }
 
   if (faq.length > 0) {
