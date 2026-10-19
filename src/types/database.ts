@@ -157,6 +157,15 @@ export type NatalPhoto = {
   updated_at: string;
 };
 
+export type NatalGalleryPhoto = {
+  id: string;
+  /** id de produto em src/lib/data/natal.ts */
+  product_id: string;
+  photo_url: string;
+  display_order: number;
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -212,6 +221,12 @@ export type Database = {
         Row: NatalPhoto;
         Insert: Partial<NatalPhoto>;
         Update: Partial<NatalPhoto>;
+        Relationships: [];
+      };
+      natal_gallery: {
+        Row: NatalGalleryPhoto;
+        Insert: Partial<NatalGalleryPhoto>;
+        Update: Partial<NatalGalleryPhoto>;
         Relationships: [];
       };
       page_content: {
