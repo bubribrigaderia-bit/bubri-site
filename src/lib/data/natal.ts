@@ -161,8 +161,8 @@ export const NATAL_REASONS: { title: string; text: string }[] = [
     text: "Trabalhamos com chocolate nobre Sicao, do grupo Barry Callebaut.",
   },
   {
-    title: "Processo artesanal",
-    text: "Cada doce é único e pode apresentar pequenas variações, que fazem parte do processo artesanal.",
+    title: "Cuidado que vira percepção de marca",
+    text: "Cada doce é finalizado à mão, peça por peça. Quem recebe percebe o capricho e associa esse cuidado à sua empresa.",
   },
   {
     title: "Apresentação completa",

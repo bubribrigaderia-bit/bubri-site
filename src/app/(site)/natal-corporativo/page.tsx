@@ -51,7 +51,7 @@ export default async function NatalCorporativoPage() {
               Bubri · Natal Corporativo {NATAL_YEAR}
             </span>
             <h1 className="font-display text-4xl md:text-5xl leading-[1.1] text-balance text-[#f3dfb4]">
-              Cada detalhe com a sua marca. Cada presente com o nosso cuidado.
+              O Natal da sua empresa, com a sua marca em cada detalhe.
             </h1>
             <p className="text-white/90 max-w-prose">
               Kits e presentes de Natal corporativos personalizados com a logo da sua empresa, para
