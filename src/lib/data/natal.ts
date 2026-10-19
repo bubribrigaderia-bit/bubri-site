@@ -87,8 +87,8 @@ export const NATAL_PRODUCTS: NatalProduct[] = [
     photo: "/natal/chocotone.jpg",
     group: "especiais",
     variants: [
-      { label: "Mini Chocotone", price: 54 },
-      { label: "Chocotone Grande", price: 142 },
+      { label: "Mini Chocotone (150 g)", price: 54 },
+      { label: "Chocotone Grande (800 g)", price: 142 },
     ],
     flavors: ["Pistache Crocante", "Nutella Crocante", "Brigadeiro", "Ninho c/ Frutas Vermelhas"],
     fromPrice: true,
@@ -158,7 +158,7 @@ export const NATAL_REASONS: { title: string; text: string }[] = [
   },
   {
     title: "Ingredientes de alta qualidade",
-    text: "Destaque para os chocolates belgas Callebaut e Sicao.",
+    text: "Trabalhamos com chocolate nobre Sicao, do grupo Barry Callebaut.",
   },
   {
     title: "Processo artesanal",

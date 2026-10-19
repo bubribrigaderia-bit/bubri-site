@@ -55,7 +55,7 @@ export default async function NatalCorporativoPage() {
             </h1>
             <p className="text-white/90 max-w-prose">
               Presentes de Natal artesanais para equipes, clientes e parceiros — com embalagem, fita
-              e tag personalizadas com a identidade da sua empresa. Chocolates belgas, nota fiscal e
+              e tag personalizadas com a identidade da sua empresa. Chocolate nobre Sicao, nota fiscal e
               entrega em São Paulo e para todo o Brasil.
             </p>
             <div className="flex flex-wrap gap-3 mt-1">
@@ -105,7 +105,7 @@ export default async function NatalCorporativoPage() {
             </h2>
             <p className="text-graphite leading-relaxed">
               A Bubri Confeitaria é uma marca artesanal que transforma doces em experiências.
-              Trabalhamos com chocolates belgas Callebaut e ingredientes selecionados, tudo feito de
+              Trabalhamos com chocolate nobre Sicao, do grupo Barry Callebaut, e ingredientes selecionados, tudo feito de
               forma artesanal e personalizado do doce à embalagem.
             </p>
           </div>
