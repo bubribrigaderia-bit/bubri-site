@@ -18,7 +18,7 @@ import { buildWhatsAppLink, formatPhoneForDisplay } from "@/lib/whatsapp";
 import { NATAL_DESCRIPTION, natalCatalogJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: `Natal Corporativo ${NATAL_YEAR}: presentes personalizados para empresas em São Paulo`,
+  title: `Kit de Natal Corporativo Personalizado em São Paulo ${NATAL_YEAR}`,
   description: NATAL_DESCRIPTION,
   alternates: { canonical: "/natal-corporativo" },
   openGraph: {
@@ -54,9 +54,9 @@ export default async function NatalCorporativoPage() {
               Cada detalhe com a sua marca. Cada presente com o nosso cuidado.
             </h1>
             <p className="text-white/90 max-w-prose">
-              Presentes de Natal artesanais para equipes, clientes e parceiros — com embalagem, fita
-              e tag personalizadas com a identidade da sua empresa. Chocolate nobre Sicao, nota fiscal e
-              entrega em São Paulo e para todo o Brasil.
+              Kits e presentes de Natal corporativos personalizados com a logo da sua empresa, para
+              equipes, clientes e parceiros. Chocotone, bombons e doces finos artesanais feitos em
+              São Paulo com chocolate nobre Sicao, nota fiscal e entrega para todo o Brasil.
             </p>
             <div className="flex flex-wrap gap-3 mt-1">
               <a

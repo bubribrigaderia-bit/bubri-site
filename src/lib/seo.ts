@@ -111,7 +111,7 @@ export function catalogJsonLd(name: string, path: string, products: Product[]) {
 }
 
 export const NATAL_DESCRIPTION =
-  "Natal corporativo em São Paulo: chocotone, bombons, caixas e kits de Natal artesanais personalizados com a marca da sua empresa, para equipes, clientes e parceiros. Nota fiscal e envio para todo o Brasil.";
+  "Presentes de Natal corporativos com a logo da sua empresa: chocotone, bombons e kits artesanais para clientes e equipes. Nota fiscal e entrega em SP e Brasil.";
 
 export function natalCatalogJsonLd() {
   return {
