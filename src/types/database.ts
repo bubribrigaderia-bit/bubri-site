@@ -150,6 +150,13 @@ export type PageContent = {
   updated_at: string;
 };
 
+export type NatalPhoto = {
+  /** id de produto em src/lib/data/natal.ts, ou "capa" */
+  product_id: string;
+  photo_url: string;
+  updated_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -199,6 +206,12 @@ export type Database = {
         Row: CorporateClient;
         Insert: Partial<CorporateClient>;
         Update: Partial<CorporateClient>;
+        Relationships: [];
+      };
+      natal_photos: {
+        Row: NatalPhoto;
+        Insert: Partial<NatalPhoto>;
+        Update: Partial<NatalPhoto>;
         Relationships: [];
       };
       page_content: {

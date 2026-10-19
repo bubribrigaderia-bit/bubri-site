@@ -39,9 +39,11 @@ function formatDate(iso: string) {
 
 function ProductCard({
   product,
+  photo,
   onAdd,
 }: {
   product: NatalProduct;
+  photo: string;
   onAdd: (line: Omit<OrderLine, "key">) => void;
 }) {
   const [variantIndex, setVariantIndex] = useState(0);
@@ -69,7 +71,7 @@ function ProductCard({
     <article className="bg-paper-raised rounded-2xl flex h-full flex-col overflow-hidden border border-line-soft">
       <div className="relative">
         <img
-          src={product.photo}
+          src={photo}
           alt={product.name}
           loading="lazy"
           className="aspect-[4/5] w-full object-cover bg-wine"
@@ -182,7 +184,14 @@ function ProductCard({
   );
 }
 
-export function NatalCatalog({ whatsappNumber }: { whatsappNumber: string }) {
+export function NatalCatalog({
+  whatsappNumber,
+  photos,
+}: {
+  whatsappNumber: string;
+  /** Fotos trocadas no /admin, por id de produto. */
+  photos: Record<string, string>;
+}) {
   const [lines, setLines] = useState<OrderLine[]>([]);
   const [company, setCompany] = useState("");
   const [contact, setContact] = useState("");
@@ -262,7 +271,12 @@ export function NatalCatalog({ whatsappNumber }: { whatsappNumber: string }) {
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
               {NATAL_PRODUCTS.filter((p) => p.group === group.value).map((product) => (
-                <ProductCard key={product.id} product={product} onAdd={addLine} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  photo={photos[product.id] ?? product.photo}
+                  onAdd={addLine}
+                />
               ))}
             </div>
           </section>
