@@ -5,6 +5,7 @@ import { WhatsAppFloatingButton } from "@/components/site/WhatsAppFloatingButton
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { JsonLd } from "@/components/site/JsonLd";
 import { bakeryJsonLd } from "@/lib/seo";
+import { MetaPixel } from "@/components/site/MetaPixel";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSiteSettings();
@@ -16,6 +17,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <>
       <JsonLd data={bakeryJsonLd(settings)} />
+      <MetaPixel />
       <Nav whatsappHref={whatsappHref} />
       <main className="flex-1">{children}</main>
       <Footer

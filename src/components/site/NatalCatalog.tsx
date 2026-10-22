@@ -10,6 +10,7 @@ import {
   type NatalProduct,
 } from "@/lib/data/natal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { trackPixel } from "@/lib/metaPixel";
 
 type OrderLine = {
   key: string;
@@ -284,6 +285,12 @@ export function NatalCatalog({
 
   function addLine(line: Omit<OrderLine, "key">) {
     const key = lineKey(line.productId, line.label, line.flavor);
+    trackPixel("AddToCart", {
+      content_ids: [line.productId],
+      content_name: line.label,
+      value: line.qty * line.unitPrice,
+      currency: "BRL",
+    });
     setLines((prev) => {
       const existing = prev.find((l) => l.key === key);
       if (existing) {
@@ -482,6 +489,13 @@ export function NatalCatalog({
               className="flex flex-col gap-4"
               onSubmit={(e) => {
                 e.preventDefault();
+                // Pedido enviado para o WhatsApp: é a conversão que os anúncios vão otimizar.
+                trackPixel("Lead", {
+                  content_name: "Natal Corporativo",
+                  num_items: totalUnits,
+                  value: totalValue,
+                  currency: "BRL",
+                });
                 window.open(whatsappHref, "_blank", "noopener,noreferrer");
               }}
             >
