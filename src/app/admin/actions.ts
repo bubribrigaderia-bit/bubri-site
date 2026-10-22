@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { NATAL_COVER_ID, NATAL_PRODUCTS } from "@/lib/data/natal";
+import { notifyIndexNow } from "@/lib/indexNow";
 
 const CATEGORY_VALUES = ["presentes", "casamentos_eventos", "corporativo", "degustacao"] as const;
 
@@ -27,6 +28,12 @@ const productSchema = z.object({
   display_order: z.number().int().default(0),
 });
 
+// Atualiza a página no site e avisa os buscadores (IndexNow) que ela mudou.
+function publishChange(...args: Parameters<typeof revalidatePath>) {
+  revalidatePath(...args);
+  notifyIndexNow();
+}
+
 export type ActionResult = { success: true } | { success: false; error: string };
 
 export async function upsertProduct(input: unknown): Promise<ActionResult> {
@@ -44,7 +51,7 @@ export async function upsertProduct(input: unknown): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/cardapio");
+  publishChange("/cardapio");
   return { success: true };
 }
 
@@ -58,7 +65,7 @@ export async function toggleProductActive(id: string, active: boolean): Promise<
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/cardapio");
+  publishChange("/cardapio");
   return { success: true };
 }
 
@@ -72,7 +79,7 @@ export async function deleteProduct(id: string): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/cardapio");
+  publishChange("/cardapio");
   return { success: true };
 }
 
@@ -96,7 +103,7 @@ export async function updatePillar(input: unknown): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/");
+  publishChange("/");
   return { success: true };
 }
 
@@ -126,7 +133,7 @@ export async function upsertOccasionPhoto(input: unknown): Promise<ActionResult>
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/[ocasiao]", "page");
+  publishChange("/[ocasiao]", "page");
   return { success: true };
 }
 
@@ -140,7 +147,7 @@ export async function deleteOccasionPhoto(id: string): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/[ocasiao]", "page");
+  publishChange("/[ocasiao]", "page");
   return { success: true };
 }
 
@@ -164,7 +171,7 @@ export async function setProductOccasionMeta(input: unknown): Promise<ActionResu
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/[ocasiao]", "page");
+  publishChange("/[ocasiao]", "page");
   return { success: true };
 }
 
@@ -191,7 +198,7 @@ export async function upsertCorporateClient(input: unknown): Promise<ActionResul
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/corporativo");
+  publishChange("/corporativo");
   return { success: true };
 }
 
@@ -205,7 +212,7 @@ export async function deleteCorporateClient(id: string): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/corporativo");
+  publishChange("/corporativo");
   return { success: true };
 }
 
@@ -232,7 +239,7 @@ export async function upsertFaqItem(input: unknown): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/contato");
+  publishChange("/contato");
   return { success: true };
 }
 
@@ -246,7 +253,7 @@ export async function deleteFaqItem(id: string): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/contato");
+  publishChange("/contato");
   return { success: true };
 }
 
@@ -274,7 +281,7 @@ export async function upsertTestimonial(input: unknown): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/");
+  publishChange("/");
   return { success: true };
 }
 
@@ -288,7 +295,7 @@ export async function deleteTestimonial(id: string): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/");
+  publishChange("/");
   return { success: true };
 }
 
@@ -311,7 +318,7 @@ export async function updatePageContent(entries: unknown): Promise<ActionResult>
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath(`/${parsed.data[0].page === "home" ? "" : parsed.data[0].page}`);
+  publishChange(`/${parsed.data[0].page === "home" ? "" : parsed.data[0].page}`);
   return { success: true };
 }
 
@@ -344,7 +351,7 @@ export async function updateSiteSettings(input: unknown): Promise<ActionResult> 
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/", "layout");
+  publishChange("/", "layout");
   return { success: true };
 }
 
@@ -376,7 +383,7 @@ export async function setNatalPhoto(input: unknown): Promise<ActionResult> {
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/natal-corporativo");
+  publishChange("/natal-corporativo");
   return { success: true };
 }
 
@@ -408,7 +415,7 @@ export async function addNatalGalleryPhoto(input: unknown): Promise<ActionResult
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/natal-corporativo");
+  publishChange("/natal-corporativo");
   return { success: true };
 }
 
@@ -422,7 +429,7 @@ export async function deleteNatalGalleryPhoto(id: string): Promise<ActionResult>
 
   if (error) return { success: false, error: error.message };
 
-  revalidatePath("/natal-corporativo");
+  publishChange("/natal-corporativo");
   return { success: true };
 }
 
@@ -442,7 +449,7 @@ export async function reorderNatalGallery(ids: unknown): Promise<ActionResult> {
     if (error) return { success: false, error: error.message };
   }
 
-  revalidatePath("/natal-corporativo");
+  publishChange("/natal-corporativo");
   return { success: true };
 }
 
