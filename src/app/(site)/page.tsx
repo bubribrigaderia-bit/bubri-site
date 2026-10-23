@@ -7,14 +7,18 @@ import { PillarCard } from "@/components/site/PillarCard";
 import { OrganicBlob } from "@/components/site/OrganicBlob";
 import { Reveal } from "@/components/site/Reveal";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { getNatalPhotos } from "@/lib/data/natalPhotos";
+import { NATAL_COVER_ID, NATAL_COVER_PHOTO, NATAL_YEAR } from "@/lib/data/natal";
 
 export default async function HomePage() {
-  const [settings, pillars, content, testimonials] = await Promise.all([
+  const [settings, pillars, content, testimonials, natalPhotos] = await Promise.all([
     getSiteSettings(),
     getPillars(),
     getPageContent("home"),
     getActiveTestimonials(),
+    getNatalPhotos(),
   ]);
+  const natalCover = natalPhotos[NATAL_COVER_ID] ?? NATAL_COVER_PHOTO;
 
   const heroWhatsapp = buildWhatsAppLink(
     settings.whatsapp_number,
@@ -135,6 +139,34 @@ export default async function HomePage() {
           />
         </svg>
       </section>
+
+      <Reveal className="mx-auto max-w-5xl px-6 w-full">
+        <Link
+          href="/natal-corporativo"
+          className="group grid overflow-hidden rounded-2xl bg-wine text-white shadow-lg hover:bg-wine-deep transition-colors sm:grid-cols-[1fr_1.2fr]"
+        >
+          <img
+            src={natalCover}
+            alt={`Presentes de Natal corporativo Bubri ${NATAL_YEAR}`}
+            loading="lazy"
+            className="h-52 w-full object-cover sm:h-full"
+          />
+          <span className="flex flex-col gap-3 p-6 md:p-8 justify-center">
+            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#e2c892]">
+              Coleção de Natal {NATAL_YEAR}
+            </span>
+            <span className="font-display text-2xl md:text-3xl text-[#f3dfb4] text-balance">
+              Natal Corporativo: presentes personalizados para a sua empresa
+            </span>
+            <span className="text-sm text-white/85">
+              Kits com a marca da sua empresa para clientes e equipe. Monte o pedido pelo site e finalize no WhatsApp.
+            </span>
+            <span className="mt-1 font-semibold text-[#e2c892] group-hover:translate-x-1 transition-transform">
+              Ver coleção e montar pedido →
+            </span>
+          </span>
+        </Link>
+      </Reveal>
 
       <Reveal className="mx-auto max-w-5xl px-6 w-full flex flex-col gap-6">
         <h2 className="font-display text-3xl md:text-4xl text-ink text-balance">
