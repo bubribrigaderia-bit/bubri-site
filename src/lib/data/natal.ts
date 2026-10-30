@@ -82,7 +82,7 @@ export const NATAL_PRODUCTS: NatalProduct[] = [
       "Um brinde para quem fez o ano ser especial: espumante mini e seis doces finos selecionados, em caixa com visor e tag personalizada da empresa.",
     photo: "/natal/doce-brinde.jpg",
     group: "especiais",
-    variants: [{ label: "Doce Brinde", price: 150 }],
+    variants: [{ label: "Doce Brinde", price: 180 }],
   },
   {
     id: "chocotone",
